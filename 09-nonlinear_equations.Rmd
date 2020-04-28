@@ -1,0 +1,154 @@
+# 非线性方程组求解 {nonlinear equations}
+
+继续讨论
+
+$$
+f: \mathbb{R}^n \to \mathbb{R}^m \\
+\vec{x}^* :  f(\vec{x}^* ) = \vec{0}
+$$
+
+我们一般会认为 n ≥ m. $f(\vec{x}) = A \vec{x} - \vec{b}$ 当然是属于上面讨论过的一种我们已经知道怎么处理的情况。
+
+
+## 牛顿法
+
+### 雅可比矩阵 Jacobian matrix
+
+
+$$
+(Df)_{ij} = \frac{\partial f_i}{\partial x_j} =  {\begin{bmatrix}{\dfrac {\partial \mathbf {f} }{\partial x_{1}}}&\cdots &{\dfrac {\partial \mathbf {f} }{\partial x_{n}}}\end{bmatrix}} 
+= {\begin{bmatrix}{\dfrac {\partial f_{1}}{\partial x_{1}}}&\cdots &{\dfrac {\partial f_{1}}{\partial x_{n}}}\\\vdots &\ddots &\vdots \\{\dfrac {\partial f_{m}}{\partial x_{1}}}&\cdots &{\dfrac {\partial f_{m}}{\partial x_{n}}}\end{bmatrix}}
+$$
+
+
+> 如果函数  $f: \mathbb{R}^n \to \mathbb{R}^m$ 在点 x 可微的话，在点 x  的雅可比矩阵即为该函数在该点的最佳线性逼近，也代表雅可比矩阵是单变数实数函数的微分在向量值多变数函数的推广，在这种情况下，雅可比矩阵也被称作函数 f 在点 x 的微分或者导数。
+
+
+$$
+f(\vec{x}) \approx f(\vec{x}_k) + Df(\vec{x}_k)(\vec{x} - \vec{x}_k)
+$$
+
+
+所以我们可以在非线性方程组上推广牛顿法：
+
+$$
+\vec{x}_{k+1} = \vec{x}_k - [Df(\vec{x}_k)]^{-1} f(\vec{x}_k)
+$$
+
+
+
+
+我们可以令：
+
+$$
+[Df(\vec{x}_k)]^{-1} f(\vec{x}_k) = \vec{y}_k
+$$
+
+所以：
+
+
+$$
+[Df(\vec{x}_k)] \vec{y}_k = f(\vec{x}_k)
+$$
+
+这样可以避免直接求 $[Df(\vec{x}_k)]^{-1}$, 可以用高斯消元法求出 $\vec{y}_k$.
+
+牛顿法的收敛条件为：雅克比矩阵特征值的最大模小于1，此时收敛速度为二次。
+
+
+使用牛顿法的缺点依旧是：
+
+- 微分比较难
+- 雅克比矩阵 $Df(\vec{x}_k)$ 每次都会变化，增大计算量 
+
+## Broyden's method
+
+Broyden's method 是一种拟牛顿法，还是以牛顿法为基础，注意割线法中我们用数值来代替 f'(x):
+
+
+$$
+f'(x_{k}) \approx {\frac {f(x_{k})-f(x_{k-1})}{x_{k}-x_{k-1}}} \\
+x_{k+1}=x_{k}-{\frac {f(x_{k})}{f'(x_{k})}}
+$$
+
+这里我们的想法也是类似的：
+
+$$
+J \cdot ( \vec{x}_{k} - \vec{x}_{k-1})  \approx   f(\vec{x}_{k}) - f(\vec{x}_{k-1})  \\
+J \approx Df(\vec{x}_k)
+$$
+
+- 保持$\vec{x}_k$ 和 $J_k$
+- 用类似牛顿法更新  $\vec{x}_k$
+- 用类似割线法更新 $J_k$
+
+
+更具体来说就是：
+
+$$
+ \text{minimize}_{J_k} \parallel J_k - J_{k-1} \parallel_{Fro} ^2 \\
+ \text{such that  } J \cdot ( \vec{x}_{k} - \vec{x}_{k-1})  \approx   f(\vec{x}_{k}) - f(\vec{x}_{k-1}) 
+$$
+
+在满足上述条件的情况下，我们可以用拉格朗日乘子法推导出：
+
+$$
+J_k= J_{k-1}+{\frac { ( f(\vec{x}_k) - f(\vec{x}_{k-1}) - J_{k-1}\Delta \vec{x} ) }{\|\vec{x}_k - \vec{x}_{k-1} \|^{2}}} (\Delta \vec{x}^T)  \\
+\vec{x}_{k+1} = \vec{x}_k - J_k^{-1} f(\vec{x}_k)
+$$
+
+
+我们可以初始化 $J_0 = I$, 不过我们依旧需要计算$J_k^{-1}$, 注意观察：
+
+$$
+J_k= J_{k-1}+{\frac { ( f(\vec{x}_k) - f(\vec{x}_{k-1}) - J_{k-1}\Delta \vec{x} ) }{\|\vec{x}_k - \vec{x}_{k-1} \|^{2}}} (\Delta \vec{x}^T)
+$$
+
+我们可以把它写成：
+
+$$
+J_k= J_{k-1}+ \vec{u}_k\vec{v}_k^T
+$$
+
+
+利用 Sherman-Morrison Formula:
+
+$$
+{\displaystyle \left(A+uv^{\textsf {T}}\right)^{-1}=A^{-1}-{A^{-1}uv^{\textsf {T}}A^{-1} \over 1+v^{\textsf {T}}A^{-1}u}.}
+$$
+
+可以推导出：
+
+$$
+J_k^{-1} = J_{k-1}^{-1} - \frac{ J_{k-1}^{-1} \vec{u}_k \vec{v}_k^T J_{k-1}^{-1}  }{ 1 + \vec{v}_k^T J_{k-1}^{-1} \vec{u}_k}
+$$
+
+所以用上面这个式子来计算 $J_k^{-1}$.
+
+## 计算
+
+我们依旧可以用 scipy 中的 fsolve 来尝试计算：
+
+$$
+\begin{cases}
+ x_0 + x_1^2 = 4 \\
+ e^{x_0} + {x_0}{x_1} = 3\\
+\end{cases}
+$$
+
+
+```python
+from scipy.optimize import fsolve
+import math
+
+def equations(p):
+    x0, x1 = p
+    return ( x0 + x1**2 - 4, math.exp(x0) + x0 * x1 -3 )
+
+x0, x1 = fsolve(equations, (1, 1))
+
+print(x0, x1)
+# 0.6203445234801195 1.8383839306750887
+print(equations((x0, x1)))
+# (4.4508396968012676e-11, -1.0512035686360832e-11)
+```

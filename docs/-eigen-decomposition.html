@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 特征分解 {Eigen decomposition} | 数值分析笔记</title>
+  <meta name="description" content="数值分析记得笔记" />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 特征分解 {Eigen decomposition} | 数值分析笔记" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="数值分析记得笔记" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 特征分解 {Eigen decomposition} | 数值分析笔记" />
+  
+  <meta name="twitter:description" content="数值分析记得笔记" />
+  
+
+<meta name="author" content="Xue Yu" />
+
+
+<meta name="date" content="2020-04-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="qr-.html"/>
+<link rel="next" href="-svd-decomposition.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>前言</a></li>
+<li class="chapter" data-level="1" data-path="-gaussian-elimination.html"><a href="-gaussian-elimination.html"><i class="fa fa-check"></i><b>1</b> 高斯消元法 {Gaussian elimination}</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="-gaussian-elimination.html"><a href="-gaussian-elimination.html#数学"><i class="fa fa-check"></i><b>1.1</b> 数学</a></li>
+<li class="chapter" data-level="1.2" data-path="-gaussian-elimination.html"><a href="-gaussian-elimination.html#计算"><i class="fa fa-check"></i><b>1.2</b> 计算</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="cholesky-cholesky-decomposition.html"><a href="cholesky-cholesky-decomposition.html"><i class="fa fa-check"></i><b>2</b> Cholesky分解 {Cholesky decomposition}</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="cholesky-cholesky-decomposition.html"><a href="cholesky-cholesky-decomposition.html#ata"><i class="fa fa-check"></i><b>2.1</b> <span class="math inline">\(A^{T}A\)</span></a></li>
+<li class="chapter" data-level="2.2" data-path="cholesky-cholesky-decomposition.html"><a href="cholesky-cholesky-decomposition.html#对称"><i class="fa fa-check"></i><b>2.2</b> 对称</a></li>
+<li class="chapter" data-level="2.3" data-path="cholesky-cholesky-decomposition.html"><a href="cholesky-cholesky-decomposition.html#正定矩阵"><i class="fa fa-check"></i><b>2.3</b> 正定矩阵</a></li>
+<li class="chapter" data-level="2.4" data-path="cholesky-cholesky-decomposition.html"><a href="cholesky-cholesky-decomposition.html#cholesky分解"><i class="fa fa-check"></i><b>2.4</b> Cholesky分解</a></li>
+<li class="chapter" data-level="2.5" data-path="cholesky-cholesky-decomposition.html"><a href="cholesky-cholesky-decomposition.html#计算-1"><i class="fa fa-check"></i><b>2.5</b> 计算</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="qr-.html"><a href="qr-.html"><i class="fa fa-check"></i><b>3</b> QR 分解</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="qr-.html"><a href="qr-.html#gram-schmidt"><i class="fa fa-check"></i><b>3.1</b> Gram-Schmidt</a></li>
+<li class="chapter" data-level="3.2" data-path="qr-.html"><a href="qr-.html#householder变换"><i class="fa fa-check"></i><b>3.2</b> Householder变换</a></li>
+<li class="chapter" data-level="3.3" data-path="qr-.html"><a href="qr-.html#计算-2"><i class="fa fa-check"></i><b>3.3</b> 计算</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html"><i class="fa fa-check"></i><b>4</b> 特征分解 {Eigen decomposition}</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#出现原因"><i class="fa fa-check"></i><b>4.1</b> 出现原因</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#主成分分析"><i class="fa fa-check"></i><b>4.1.1</b> 主成分分析</a></li>
+<li class="chapter" data-level="4.1.2" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#物理方程"><i class="fa fa-check"></i><b>4.1.2</b> 物理方程</a></li>
+<li class="chapter" data-level="4.1.3" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#quadratic-energy"><i class="fa fa-check"></i><b>4.1.3</b> Quadratic Energy</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#定义"><i class="fa fa-check"></i><b>4.2</b> 定义</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#特征值和特征向量"><i class="fa fa-check"></i><b>4.2.1</b> 特征值和特征向量</a></li>
+<li class="chapter" data-level="4.2.2" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#谱和谱半径"><i class="fa fa-check"></i><b>4.2.2</b> 谱和谱半径</a></li>
+<li class="chapter" data-level="4.2.3" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#有关特征值和特征向量的定理"><i class="fa fa-check"></i><b>4.2.3</b> 有关特征值和特征向量的定理</a></li>
+<li class="chapter" data-level="4.2.4" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#扩展到复域"><i class="fa fa-check"></i><b>4.2.4</b> 扩展到复域</a></li>
+<li class="chapter" data-level="4.2.5" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#谱定理"><i class="fa fa-check"></i><b>4.2.5</b> 谱定理</a></li>
+<li class="chapter" data-level="4.2.6" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#理论基础"><i class="fa fa-check"></i><b>4.2.6</b> 理论基础</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#计算-3"><i class="fa fa-check"></i><b>4.3</b> 计算</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#最大的-eigenvalue-及对应的-eigenvector"><i class="fa fa-check"></i><b>4.3.1</b> 最大的 eigenvalue 及对应的 eigenvector</a></li>
+<li class="chapter" data-level="4.3.2" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#最小的-eigenvalue-及对应的-eigenvector"><i class="fa fa-check"></i><b>4.3.2</b> 最小的 eigenvalue 及对应的 eigenvector</a></li>
+<li class="chapter" data-level="4.3.3" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#靠近-sigma的-eigenvalue-及对应的-eigenvector"><i class="fa fa-check"></i><b>4.3.3</b> 靠近 <span class="math inline">\(\sigma\)</span>的 eigenvalue 及对应的 eigenvector</a></li>
+<li class="chapter" data-level="4.3.4" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#根据-eigenvector-猜-eigenvalue"><i class="fa fa-check"></i><b>4.3.4</b> 根据 eigenvector 猜 eigenvalue</a></li>
+<li class="chapter" data-level="4.3.5" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#all-eigenevalue"><i class="fa fa-check"></i><b>4.3.5</b> All eigenevalue</a></li>
+<li class="chapter" data-level="4.3.6" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#householder-变换"><i class="fa fa-check"></i><b>4.3.6</b> Householder 变换</a></li>
+<li class="chapter" data-level="4.3.7" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#qr"><i class="fa fa-check"></i><b>4.3.7</b> QR</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html"><i class="fa fa-check"></i><b>5</b> 奇异值分解 {SVD decomposition}</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#引入"><i class="fa fa-check"></i><b>5.1</b> 引入</a></li>
+<li class="chapter" data-level="5.2" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#理解"><i class="fa fa-check"></i><b>5.2</b> 理解</a></li>
+<li class="chapter" data-level="5.3" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#计算-4"><i class="fa fa-check"></i><b>5.3</b> 计算</a></li>
+<li class="chapter" data-level="5.4" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#应用"><i class="fa fa-check"></i><b>5.4</b> 应用</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#例子一"><i class="fa fa-check"></i><b>5.4.1</b> 例子一</a></li>
+<li class="chapter" data-level="5.4.2" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#例子二"><i class="fa fa-check"></i><b>5.4.2</b> 例子二</a></li>
+<li class="chapter" data-level="5.4.3" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#例子三"><i class="fa fa-check"></i><b>5.4.3</b> 例子三</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#例子"><i class="fa fa-check"></i><b>5.5</b> 例子</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="-svd-application.html"><a href="-svd-application.html"><i class="fa fa-check"></i><b>6</b> 奇异值分解的应用 {SVD application}</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="-svd-application.html"><a href="-svd-application.html#rigid-alignment-procrustes-problem"><i class="fa fa-check"></i><b>6.1</b> Rigid Alignment / Procrustes Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="-svd-application.html"><a href="-svd-application.html#apar"><i class="fa fa-check"></i><b>6.2</b> APAR</a></li>
+<li class="chapter" data-level="6.3" data-path="-svd-application.html"><a href="-svd-application.html#pca"><i class="fa fa-check"></i><b>6.3</b> PCA</a></li>
+<li class="chapter" data-level="6.4" data-path="-svd-application.html"><a href="-svd-application.html#图像压缩"><i class="fa fa-check"></i><b>6.4</b> 图像压缩</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="-matirx-application.html"><a href="-matirx-application.html"><i class="fa fa-check"></i><b>7</b> 矩阵分解 {matirx application}</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="-matirx-application.html"><a href="-matirx-application.html#定义-1"><i class="fa fa-check"></i><b>7.1</b> 定义</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="-matirx-application.html"><a href="-matirx-application.html#共轭转置-conjugate-transpose"><i class="fa fa-check"></i><b>7.1.1</b> 共轭转置 Conjugate transpose</a></li>
+<li class="chapter" data-level="7.1.2" data-path="-matirx-application.html"><a href="-matirx-application.html#hermitian"><i class="fa fa-check"></i><b>7.1.2</b> Hermitian</a></li>
+<li class="chapter" data-level="7.1.3" data-path="-matirx-application.html"><a href="-matirx-application.html#正定-positive-definite"><i class="fa fa-check"></i><b>7.1.3</b> 正定 positive definite</a></li>
+<li class="chapter" data-level="7.1.4" data-path="-matirx-application.html"><a href="-matirx-application.html#正交矩阵-orthogonal-matrix"><i class="fa fa-check"></i><b>7.1.4</b> 正交矩阵 orthogonal matrix</a></li>
+<li class="chapter" data-level="7.1.5" data-path="-matirx-application.html"><a href="-matirx-application.html#酉矩阵-unitary-matrix"><i class="fa fa-check"></i><b>7.1.5</b> 酉矩阵 unitary matrix</a></li>
+<li class="chapter" data-level="7.1.6" data-path="-matirx-application.html"><a href="-matirx-application.html#正规矩阵-normal-matrix"><i class="fa fa-check"></i><b>7.1.6</b> 正规矩阵 normal matrix</a></li>
+<li class="chapter" data-level="7.1.7" data-path="-matirx-application.html"><a href="-matirx-application.html#类比"><i class="fa fa-check"></i><b>7.1.7</b> 类比</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="-matirx-application.html"><a href="-matirx-application.html#分解"><i class="fa fa-check"></i><b>7.2</b> 分解</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="-matirx-application.html"><a href="-matirx-application.html#a-plu"><i class="fa fa-check"></i><b>7.2.1</b> A = PLU</a></li>
+<li class="chapter" data-level="7.2.2" data-path="-matirx-application.html"><a href="-matirx-application.html#cholesky-分解"><i class="fa fa-check"></i><b>7.2.2</b> Cholesky 分解</a></li>
+<li class="chapter" data-level="7.2.3" data-path="-matirx-application.html"><a href="-matirx-application.html#qr分解"><i class="fa fa-check"></i><b>7.2.3</b> QR分解</a></li>
+<li class="chapter" data-level="7.2.4" data-path="-matirx-application.html"><a href="-matirx-application.html#特征分解频谱分解-eigendecomposition-spectral-decomposition"><i class="fa fa-check"></i><b>7.2.4</b> 特征分解/频谱分解 Eigendecomposition / spectral decomposition</a></li>
+<li class="chapter" data-level="7.2.5" data-path="-matirx-application.html"><a href="-matirx-application.html#奇异值分解"><i class="fa fa-check"></i><b>7.2.5</b> 奇异值分解</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="-nonlinear-equation.html"><a href="-nonlinear-equation.html"><i class="fa fa-check"></i><b>8</b> 非线性方程求解 {nonlinear equation}</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="-nonlinear-equation.html"><a href="-nonlinear-equation.html#二分法-bisection-method"><i class="fa fa-check"></i><b>8.1</b> 二分法 Bisection method</a></li>
+<li class="chapter" data-level="8.2" data-path="-nonlinear-equation.html"><a href="-nonlinear-equation.html#不动点-fixed-point"><i class="fa fa-check"></i><b>8.2</b> 不动点 fixed point</a></li>
+<li class="chapter" data-level="8.3" data-path="-nonlinear-equation.html"><a href="-nonlinear-equation.html#牛顿法-newtons-method"><i class="fa fa-check"></i><b>8.3</b> 牛顿法 Newton’s method</a></li>
+<li class="chapter" data-level="8.4" data-path="-nonlinear-equation.html"><a href="-nonlinear-equation.html#割线法-secant-method"><i class="fa fa-check"></i><b>8.4</b> 割线法 Secant method</a></li>
+<li class="chapter" data-level="8.5" data-path="-nonlinear-equation.html"><a href="-nonlinear-equation.html#计算-5"><i class="fa fa-check"></i><b>8.5</b> 计算</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="-nonlinear-equations.html"><a href="-nonlinear-equations.html"><i class="fa fa-check"></i><b>9</b> 非线性方程组求解 {nonlinear equations}</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="-nonlinear-equations.html"><a href="-nonlinear-equations.html#牛顿法"><i class="fa fa-check"></i><b>9.1</b> 牛顿法</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="-nonlinear-equations.html"><a href="-nonlinear-equations.html#雅可比矩阵-jacobian-matrix"><i class="fa fa-check"></i><b>9.1.1</b> 雅可比矩阵 Jacobian matrix</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="-nonlinear-equations.html"><a href="-nonlinear-equations.html#broydens-method"><i class="fa fa-check"></i><b>9.2</b> Broyden’s method</a></li>
+<li class="chapter" data-level="9.3" data-path="-nonlinear-equations.html"><a href="-nonlinear-equations.html#计算-6"><i class="fa fa-check"></i><b>9.3</b> 计算</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="-points-concepts.html"><a href="-points-concepts.html"><i class="fa fa-check"></i><b>10</b> 临界点、驻点、拐点、鞍点、顶点（曲线） {Points Concepts}</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="-points-concepts.html"><a href="-points-concepts.html#临界点-critial-point"><i class="fa fa-check"></i><b>10.1</b> 临界点 critial point</a></li>
+<li class="chapter" data-level="10.2" data-path="-points-concepts.html"><a href="-points-concepts.html#驻点-stationary-point"><i class="fa fa-check"></i><b>10.2</b> 驻点 stationary point</a></li>
+<li class="chapter" data-level="10.3" data-path="-points-concepts.html"><a href="-points-concepts.html#拐点-inflection-point"><i class="fa fa-check"></i><b>10.3</b> 拐点 inflection point</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="-points-concepts.html"><a href="-points-concepts.html#convex-凸函数"><i class="fa fa-check"></i><b>10.3.1</b> convex 凸函数</a></li>
+<li class="chapter" data-level="10.3.2" data-path="-points-concepts.html"><a href="-points-concepts.html#concave-凹函数"><i class="fa fa-check"></i><b>10.3.2</b> concave 凹函数：</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="-points-concepts.html"><a href="-points-concepts.html#鞍点-saddle-point"><i class="fa fa-check"></i><b>10.4</b> 鞍点 saddle point</a></li>
+<li class="chapter" data-level="10.5" data-path="-points-concepts.html"><a href="-points-concepts.html#顶点曲线vertex-curve"><i class="fa fa-check"></i><b>10.5</b> 顶点（曲线）vertex (curve)</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="-jacobianhessian-gradient-related-concepts.html"><a href="-jacobianhessian-gradient-related-concepts.html"><i class="fa fa-check"></i><b>11</b> 导数、梯度、 Jacobian、Hessian {Gradient Related Concepts}</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="-jacobianhessian-gradient-related-concepts.html"><a href="-jacobianhessian-gradient-related-concepts.html#导数"><i class="fa fa-check"></i><b>11.1</b> 导数</a></li>
+<li class="chapter" data-level="11.2" data-path="-jacobianhessian-gradient-related-concepts.html"><a href="-jacobianhessian-gradient-related-concepts.html#梯度"><i class="fa fa-check"></i><b>11.2</b> 梯度</a></li>
+<li class="chapter" data-level="11.3" data-path="-jacobianhessian-gradient-related-concepts.html"><a href="-jacobianhessian-gradient-related-concepts.html#jacobian-雅可比矩阵"><i class="fa fa-check"></i><b>11.3</b> Jacobian 雅可比矩阵</a></li>
+<li class="chapter" data-level="11.4" data-path="-jacobianhessian-gradient-related-concepts.html"><a href="-jacobianhessian-gradient-related-concepts.html#hessian-黑塞矩阵"><i class="fa fa-check"></i><b>11.4</b> Hessian 黑塞矩阵</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html"><i class="fa fa-check"></i><b>12</b> 无约束优化 {Optimization without constraintss}</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#例子-1"><i class="fa fa-check"></i><b>12.1</b> 例子</a></li>
+<li class="chapter" data-level="12.2" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#极值"><i class="fa fa-check"></i><b>12.2</b> 极值</a></li>
+<li class="chapter" data-level="12.3" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#一元函数"><i class="fa fa-check"></i><b>12.3</b> 一元函数</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#牛顿法-1"><i class="fa fa-check"></i><b>12.3.1</b> 牛顿法</a></li>
+<li class="chapter" data-level="12.3.2" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#黄金分割搜索-golden-section-search"><i class="fa fa-check"></i><b>12.3.2</b> 黄金分割搜索 Golden-section search</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#多元函数"><i class="fa fa-check"></i><b>12.4</b> 多元函数</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#梯度下降法"><i class="fa fa-check"></i><b>12.4.1</b> 梯度下降法</a></li>
+<li class="chapter" data-level="12.4.2" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#牛顿法-2"><i class="fa fa-check"></i><b>12.4.2</b> 牛顿法</a></li>
+<li class="chapter" data-level="12.4.3" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#bfgs"><i class="fa fa-check"></i><b>12.4.3</b> BFGS</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html"><i class="fa fa-check"></i><b>13</b> 从拉格朗日乘子法到KKT条件 {Lagrange multiplier to KKT condition}</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#介绍"><i class="fa fa-check"></i><b>13.1</b> 介绍</a></li>
+<li class="chapter" data-level="13.2" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#多个约束"><i class="fa fa-check"></i><b>13.2</b> 多个约束</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#例子-2"><i class="fa fa-check"></i><b>13.2.1</b> 例子</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#kkt-条件"><i class="fa fa-check"></i><b>13.3</b> KKT 条件</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#介绍-1"><i class="fa fa-check"></i><b>13.3.1</b> 介绍</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#kkt-条件-1"><i class="fa fa-check"></i><b>13.4</b> KKT 条件</a></li>
+<li class="chapter" data-level="13.5" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#例子-3"><i class="fa fa-check"></i><b>13.5</b> 例子</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="-conjugate-gradient.html"><a href="-conjugate-gradient.html"><i class="fa fa-check"></i><b>14</b> 从梯度下降到共轭梯度 {Conjugate gradient}</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="-conjugate-gradient.html"><a href="-conjugate-gradient.html#梯度下降-gradient-descent"><i class="fa fa-check"></i><b>14.1</b> 梯度下降 Gradient descent</a></li>
+<li class="chapter" data-level="14.2" data-path="-conjugate-gradient.html"><a href="-conjugate-gradient.html#共轭梯度-conjugate-gradient"><i class="fa fa-check"></i><b>14.2</b> 共轭梯度 Conjugate gradient</a></li>
+<li class="chapter" data-level="14.3" data-path="-conjugate-gradient.html"><a href="-conjugate-gradient.html#总结"><i class="fa fa-check"></i><b>14.3</b> 总结</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="-interpolate.html"><a href="-interpolate.html"><i class="fa fa-check"></i><b>15</b> 插值 {Interpolate}</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="-interpolate.html"><a href="-interpolate.html#多项式插值"><i class="fa fa-check"></i><b>15.1</b> 多项式插值</a></li>
+<li class="chapter" data-level="15.2" data-path="-interpolate.html"><a href="-interpolate.html#拉格朗日插值法"><i class="fa fa-check"></i><b>15.2</b> 拉格朗日插值法</a></li>
+<li class="chapter" data-level="15.3" data-path="-interpolate.html"><a href="-interpolate.html#牛顿插值法"><i class="fa fa-check"></i><b>15.3</b> 牛顿插值法</a></li>
+<li class="chapter" data-level="15.4" data-path="-interpolate.html"><a href="-interpolate.html#分段插值"><i class="fa fa-check"></i><b>15.4</b> 分段插值</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html"><i class="fa fa-check"></i><b>16</b> 数值积分和微分{Numerial Intergration}</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#积分"><i class="fa fa-check"></i><b>16.1</b> 积分</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#黎曼和"><i class="fa fa-check"></i><b>16.1.1</b> 黎曼和</a></li>
+<li class="chapter" data-level="16.1.2" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#梯形法则"><i class="fa fa-check"></i><b>16.1.2</b> 梯形法则</a></li>
+<li class="chapter" data-level="16.1.3" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#辛普森法则"><i class="fa fa-check"></i><b>16.1.3</b> 辛普森法则</a></li>
+<li class="chapter" data-level="16.1.4" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#牛顿-柯特斯公式"><i class="fa fa-check"></i><b>16.1.4</b> 牛顿-柯特斯公式</a></li>
+<li class="chapter" data-level="16.1.5" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#精确度"><i class="fa fa-check"></i><b>16.1.5</b> 精确度</a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#微分"><i class="fa fa-check"></i><b>16.2</b> 微分</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="-ode.html"><a href="-ode.html"><i class="fa fa-check"></i><b>17</b> 常微分方程 {ODE}</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="-ode.html"><a href="-ode.html#基本形式"><i class="fa fa-check"></i><b>17.1</b> 基本形式</a></li>
+<li class="chapter" data-level="17.2" data-path="-ode.html"><a href="-ode.html#显式-ode"><i class="fa fa-check"></i><b>17.2</b> 显式 ODE</a></li>
+<li class="chapter" data-level="17.3" data-path="-ode.html"><a href="-ode.html#可视化"><i class="fa fa-check"></i><b>17.3</b> 可视化</a></li>
+<li class="chapter" data-level="17.4" data-path="-ode.html"><a href="-ode.html#解的状况"><i class="fa fa-check"></i><b>17.4</b> 解的状况</a></li>
+<li class="chapter" data-level="17.5" data-path="-ode.html"><a href="-ode.html#线性ode"><i class="fa fa-check"></i><b>17.5</b> 线性ODE</a></li>
+<li class="chapter" data-level="17.6" data-path="-ode.html"><a href="-ode.html#求解"><i class="fa fa-check"></i><b>17.6</b> 求解</a>
+<ul>
+<li class="chapter" data-level="17.6.1" data-path="-ode.html"><a href="-ode.html#前向欧拉法"><i class="fa fa-check"></i><b>17.6.1</b> 前向欧拉法</a></li>
+<li class="chapter" data-level="17.6.2" data-path="-ode.html"><a href="-ode.html#后向欧拉"><i class="fa fa-check"></i><b>17.6.2</b> 后向欧拉</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="-pde.html"><a href="-pde.html"><i class="fa fa-check"></i><b>18</b> 偏微分方程 {PDE}</a>
+<ul>
+<li class="chapter" data-level="18.1" data-path="-pde.html"><a href="-pde.html#解"><i class="fa fa-check"></i><b>18.1</b> 解</a></li>
+<li class="chapter" data-level="18.2" data-path="-pde.html"><a href="-pde.html#运算符"><i class="fa fa-check"></i><b>18.2</b> 运算符</a></li>
+<li class="chapter" data-level="18.3" data-path="-pde.html"><a href="-pde.html#纳维-斯托克斯方程-navier-stokes-equations"><i class="fa fa-check"></i><b>18.3</b> 纳维-斯托克斯方程 Navier-Stokes equations</a></li>
+<li class="chapter" data-level="18.4" data-path="-pde.html"><a href="-pde.html#麦克斯韦方程组-maxwells-equations"><i class="fa fa-check"></i><b>18.4</b> 麦克斯韦方程组 Maxwell’s equations</a></li>
+<li class="chapter" data-level="18.5" data-path="-pde.html"><a href="-pde.html#拉普拉斯方程-laplaces-equation"><i class="fa fa-check"></i><b>18.5</b> 拉普拉斯方程 Laplace’s equation</a></li>
+<li class="chapter" data-level="18.6" data-path="-pde.html"><a href="-pde.html#调和分析-harmonic-analysis"><i class="fa fa-check"></i><b>18.6</b> 调和分析 Harmonic analysis</a></li>
+<li class="chapter" data-level="18.7" data-path="-pde.html"><a href="-pde.html#边界条件-boundary-value-problems"><i class="fa fa-check"></i><b>18.7</b> 边界条件 Boundary Value Problems</a></li>
+<li class="chapter" data-level="18.8" data-path="-pde.html"><a href="-pde.html#二阶pde"><i class="fa fa-check"></i><b>18.8</b> 二阶PDE</a></li>
+<li class="chapter" data-level="18.9" data-path="-pde.html"><a href="-pde.html#椭圆型-pde"><i class="fa fa-check"></i><b>18.9</b> 椭圆型 PDE</a></li>
+<li class="chapter" data-level="18.10" data-path="-pde.html"><a href="-pde.html#抛物型-pde"><i class="fa fa-check"></i><b>18.10</b> 抛物型 PDE</a></li>
+<li class="chapter" data-level="18.11" data-path="-pde.html"><a href="-pde.html#双曲型-pde"><i class="fa fa-check"></i><b>18.11</b> 双曲型 PDE</a></li>
+<li class="chapter" data-level="18.12" data-path="-pde.html"><a href="-pde.html#微分看成算子"><i class="fa fa-check"></i><b>18.12</b> 微分看成算子</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">数值分析笔记</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="特征分解-eigen-decomposition" class="section level1" number="4">
+<h1><span class="header-section-number">Chapter 4</span> 特征分解 {Eigen decomposition}</h1>
+<div id="出现原因" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> 出现原因</h2>
+<div id="主成分分析" class="section level3" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> 主成分分析</h3>
+<p>eigen是如此的重要，之前我已经写过一篇文章了<a href="https://zhuanlan.zhihu.com/p/95836870">特征值与特征向量</a>，现在我们来看一下它可能会出现的场合，假设我有一堆 <span class="math inline">\(\mathbf{x}_i\)</span>, 我们想要找到它的主成分：</p>
+<div class="figure">
+<img src="images/GaussianScatterPCA.png" alt="" />
+<p class="caption">图片来自wikipedia</p>
+</div>
+<p>比如就像图中，我们想找到红色箭头方向 <span class="math inline">\(\mathbf{v}_i\)</span> ，那么我们可以列出方程：</p>
+<p><span class="math display">\[
+\text{minimize}  \sum_i || \mathbf{x}_i − \text{proj}_{\mathbf{v}} \mathbf{x}_i||^2 \\
+|| \mathbf{v} || = 1
+\]</span></p>
+<p>加上 <span class="math inline">\(|| \mathbf{v} || = 1\)</span> 假设 <span class="math inline">\(\mathbf{v}\)</span> 为单位向量，方便计算，所以：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\sum|| \mathbf{x}_i − \text{proj}_{\mathbf{v}} \mathbf{x}_i||^2 {}
+&amp;= ||\mathbf{x}_i − (\mathbf{x}_i \cdot \mathbf{v})\mathbf{v}) ||^2 \\
+&amp;= ||\mathbf{x}_i||^2 - 2 (\mathbf{x}_i \cdot \mathbf{v})^2 +  (\mathbf{x}_i \cdot \mathbf{v})^2\\
+&amp;= ||\mathbf{x}_i||^2 - (\mathbf{x}_i \cdot \mathbf{v})^2\\
+\end{aligned}
+\]</span></p>
+<p>最小化上面这个式子，其中 <span class="math inline">\(\mathbf{x}_i\)</span> 是已知，我们要求 <span class="math inline">\(\mathbf{v}\)</span> ，第一项固定，那么我们也就是最大化：</p>
+<p><span class="math display">\[
+\sum_i (\mathbf{x}_i \cdot \mathbf{v})^2
+\]</span></p>
+<p>那实际上也就是我们需要最大化：</p>
+<p><span class="math display">\[
+||X^T\mathbf{v}||^2\\
+|| \mathbf{v} || = 1
+\]</span></p>
+<p>这里还是比较容易想清楚的，我们用 <span class="math inline">\(\mathbf{x}_i\)</span> 来点乘 <span class="math inline">\(\mathbf{v}\)</span>， 然后要它们加起来和最大，每一项当然都要求大，我们就可以写成矩阵形式 <span class="math inline">\(X^T\mathbf{v}\)</span>， 而限制条件必不可少，单位向量是我们推导的前提 <span class="math inline">\(|| \mathbf{v} || = 1\)</span>, 否则没有这个限制最大化的话我们 <span class="math inline">\(\mathbf{v}\)</span> 岂不是可以随便取大的。</p>
+<p>最大化 <span class="math inline">\(||X^T\mathbf{v}||^2\)</span> 也就是 最大化 <span class="math inline">\(\mathbf{v}^TXX^T\mathbf{v}\)</span>， 用格朗日乘数法，也就是</p>
+<p><span class="math display">\[XX^T \mathbf{v} = \lambda \mathbf{v}\]</span></p>
+<p>这个问题是求 <span class="math inline">\(XX^T\)</span> 最大的 eigenvalue 的对应的 eigenvector.</p>
+</div>
+<div id="物理方程" class="section level3" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> 物理方程</h3>
+<p>之前也写过， eigevalue， eigenvector 最早是为了解决微分方程出现的，比如最简单的考虑一个弹簧受力方程：</p>
+<p><span class="math display">\[F = m \frac{d^2 \mathbf{x}}{dt} = -k \mathbf{x}\]</span></p>
+<p>把微分算子写成 D:</p>
+<p><span class="math display">\[
+D^2 : f[\mathbf{x}] \to f[\mathbf{x}]\\
+\mathbf{x} \mapsto D^2\mathbf{x} = \lambda \mathbf{x}
+\]</span></p>
+</div>
+<div id="quadratic-energy" class="section level3" number="4.1.3">
+<h3><span class="header-section-number">4.1.3</span> Quadratic Energy</h3>
+<p>有时候我们会有这样的 setup（比如图像分割）：</p>
+<p>Have:</p>
+<ul>
+<li>n items in a dataset</li>
+<li><span class="math inline">\(w_{ij} ≥ 0\)</span> similarity of items i and j</li>
+<li><span class="math inline">\(w_{ij} = w_{ji}\)</span></li>
+</ul>
+<p>Want:
+- <span class="math inline">\(x_{i}\)</span> embedding on R</p>
+<p>我们可以定义energy 方程：</p>
+<p><span class="math display">\[
+E(\mathbf{x}) = \sum_{ij} w_{ij} (x_i - x_j)^2
+\]</span></p>
+<p>我们想要最小化 <span class="math inline">\(E(\mathbf{x})\)</span> 同时满足：</p>
+<p><span class="math display">\[
+||\mathbf{x}||^2 = 1 \\
+\mathbf{1} \cdot \mathbf{x} = 0
+\]</span></p>
+<p>加上这些限制是为了防止最小值平凡的取为0.</p>
+<p>用格朗日乘数法：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\Lambda &amp;= \sum_{ij} w_{ij} (x_i - x_j)^2 - \lambda (\mathbf{x}^T \cdot \mathbf{x} - 1) - \mu (\mathbf{1} \cdot \mathbf{x}) {}
+\end{aligned}
+\]</span></p>
+<p>最终化简为：</p>
+<p><span class="math display">\[
+E(\mathbf{x}) = \mathbf{x}^T(2A − 2W) \mathbf{x}
+\]</span></p>
+<p>最终我们需要找到的是： 矩阵 2A − 2W 对应的第二小的特征值的特征向量， 为什么不是最小的呢？因为大概最小的特征值是0，对应的可能也是 <span class="math inline">\(\mathbf{0}\)</span>.</p>
+<p>这个对应的更多资料和证明可以参见：</p>
+<ul>
+<li><p><a href="https://www.cs.purdue.edu/homes/dgleich/demos/matlab/spectral/spectral.html">Spectral Graph Partitioning and the Laplacian with Matlab</a></p></li>
+<li><p><a href="http://blog.shriphani.com/2015/04/06/the-smallest-eigenvalues-of-a-graph-laplacian/">The Smallest Eigenvalues of a Graph Laplacian</a></p></li>
+</ul>
+</div>
+</div>
+<div id="定义" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> 定义</h2>
+<div id="特征值和特征向量" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> 特征值和特征向量</h3>
+<p>所以我们终于给出特征值和特征向量的定义了：</p>
+<p><span class="math display">\[
+A\mathbf{x} = \lambda \mathbf{x}\\
+\lambda \in \mathbb{R} , A \in \mathbb{R}^{n \times n}
+\]</span></p>
+<p>对于复数：</p>
+<p><span class="math display">\[
+A\mathbf{x} = \lambda \mathbf{x}\\
+\lambda \in \mathbb{C} , \mathbf{x} \in \mathbb{C}^n
+\]</span></p>
+<p><span class="math inline">\(\lambda\)</span> 是特征值， 而 <span class="math inline">\(\mathbf{x}\)</span> 就是对应的特征向量</p>
+</div>
+<div id="谱和谱半径" class="section level3" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> 谱和谱半径</h3>
+<p>设 A 是 n × n 矩阵， 那么它的谱则是矩阵对应的特征向量。
+而谱半径 ρ(A) 则是 <span class="math inline">\(\rho(A) = \max \left \{ |\lambda_1|, \cdots, |\lambda_n| \right \}\)</span></p>
+<p>即矩阵A的谱半径等于矩阵A的特征值绝对值的最大值。 这句话好绕啊，还是看上面的数学式子比较明显。</p>
+</div>
+<div id="有关特征值和特征向量的定理" class="section level3" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> 有关特征值和特征向量的定理</h3>
+<ul>
+<li>每个 <span class="math inline">\(A \in \mathbb{R}^{n \times n}\)</span> 至少有一个（复） 特征向量</li>
+<li>不同的特征值对应的特征向量一定是线性无关</li>
+</ul>
+<p>所以当然 A 最多可以有 n 个不同的特征值，毕竟它最多 rank 也是n， 有 n 个线性无关的column vector。</p>
+</div>
+<div id="扩展到复域" class="section level3" number="4.2.4">
+<h3><span class="header-section-number">4.2.4</span> 扩展到复域</h3>
+<p>首先我们知道复数的 <span class="math inline">\(z = a + ib \in \mathbb{C}\)</span> 的 共轭是 <span class="math inline">\(\bar{z} = a - ib\)</span> 。</p>
+<p>共轭转置是 A (m x n) 满足：</p>
+<p><span class="math display">\[{\displaystyle \left({\boldsymbol {A}}^{\mathrm {H} }\right)_{ij}={\overline {{\boldsymbol {A}}_{ji}}}}   \]</span></p>
+<p>以下写法都有：</p>
+<p><span class="math display">\[{\boldsymbol {A}}^{\mathrm {H} }=\left({\overline {\boldsymbol {A}}}\right)^{\mathsf {T}}={\overline {{\boldsymbol {A}}^{\mathsf {T}}}}\]</span></p>
+<p>埃尔米特矩阵（ Hermitian） 矩阵是指：</p>
+<p><span class="math display">\[{\displaystyle A{\text{ Hermitian}}\quad \iff \quad A= {A^H}}\]</span></p>
+<p>埃尔米特矩阵的特征值都是实数，如果一个 A 只含实数，那么它是对称阵。</p>
+<blockquote>
+<p>例如：</p>
+</blockquote>
+<blockquote>
+<p><span class="math display">\[{\begin{bmatrix}3&amp;2+i\\2-i&amp;1\end{bmatrix}}\]</span></p>
+</blockquote>
+<blockquote>
+<p>就是一个埃尔米特矩阵。
+显然，埃尔米特矩阵主对角线上的元素都是实数的，其特征值也是实数。对于只包含实数元素的矩阵（实矩阵），如果它是对称阵，即所有元素关于主对角线对称，那么它也是埃尔米特矩阵。也就是说，实对称矩阵是埃尔米特矩阵的特例。</p>
+</blockquote>
+<p>对于埃尔米特矩阵， 不同的特征值对应的不同的特征向量它们之间一定是正交的。</p>
+</div>
+<div id="谱定理" class="section level3" number="4.2.5">
+<h3><span class="header-section-number">4.2.5</span> 谱定理</h3>
+<p>假设 <span class="math inline">\(A \in \mathbb{C}^{n \times n}\)</span> 是一个 埃尔米特矩阵（如果<span class="math inline">\(A \in\mathbf{R}^{n \times n}\)</span>, 假设它对称既可）。那么， A 会有 n 个 正交的特征向量 <span class="math inline">\(\mathbf{x}_1, \cdots, \mathbf{x}_n\)</span> ，它们对应的特征值(当然，可能会重复) 则是 <span class="math inline">\(\lambda_1,\cdots, \lambda_n\)</span>.</p>
+<p>这里其实会有一点疑惑，那就是重复的特征值不带来重复的特征向量么？ 为什么它们还是可以 span <span class="math inline">\(\mathbb{R}^n\)</span>。</p>
+<p>然后我就开始想，比如 <span class="math inline">\(I\)</span> :</p>
+<p>明显 <span class="math inline">\(I\)</span> 有 n 个重复的 eigenvalue 1， 不过 <span class="math inline">\(I\)</span> 是明显 span <span class="math inline">\(\mathbb{R}^n\)</span> 的。</p>
+<p>对于更一般的情况，貌似总可以用 Gram–Schmidt 来求出基。重复的 eigenvalue 的 eigenvector span 的是 plane， 而不是我想象的共线啊。o(╯□╰)o</p>
+<p>这里有一个解答：</p>
+<p><a href="https://math.stackexchange.com/questions/1517539/if-a-real-symmetric-matrix-has-repeated-eigenvalues-why-does-it-still-have-n-li/1517545#1517545">If a real symmetric matrix has repeated eigenvalues, why does it still have n linearly independent eigenvectors?</a></p>
+<p>谱定理非常重要，之前我多次写到过，比如<a href="https://zhuanlan.zhihu.com/p/104079068">傅里叶变换</a> 中我写到过，傅里叶级数其实也就是可以看成谱定理，无非是：</p>
+<ul>
+<li>把 <span class="math inline">\(\{1, \sin x, \cos x, \sin 2x, \cos2x, \cdots, \}\)</span>看成空间中的基</li>
+<li>然后展开成这组基的线性组合 <span class="math inline">\(f(x) = a_0/2 + \sum_{n = 1}^ \infty a_n \cos nx + b_n \sin nx\)</span></li>
+</ul>
+</div>
+<div id="理论基础" class="section level3" number="4.2.6">
+<h3><span class="header-section-number">4.2.6</span> 理论基础</h3>
+<p>再补充一点相关的理论基础：</p>
+<p><span class="math display">\[A\mathbf{v} = \lambda \mathbf{v}\]</span></p>
+<p><span class="math display">\[p(\lambda) = det(A - \lambda I) = 0\]</span></p>
+<p>由代数基本定理（Fundamental theorem of algebra）我们知道 <span class="math inline">\(p(\lambda)\)</span> 有 N 个解。这些解的解集也就是特征值的集合，有时也称为“谱”（Spectrum）。</p>
+<blockquote>
+<p>代数基本定理: 任何一个非零的一元n次复系数多项式，都正好有n个复数根（重根视为多个根）。</p>
+</blockquote>
+<p>因式分解：</p>
+<p><span class="math display">\[p\left(\lambda\right)= (\lambda-\lambda_1)^{n_1}(\lambda-\lambda_2)^{n_2}\cdots(\lambda-\lambda_k)^{n_k} = 0 \!\ \]</span></p>
+<p>其中：</p>
+<p><span class="math display">\[\sum\limits_{i=1}^{k}{n_i} =N\]</span></p>
+<p>对每一个特征值 <span class="math inline">\(\lambda_i\)</span> ，我们都有下式成立：</p>
+<p><span class="math display">\[ \left(\mathbf{A} - \lambda_i \mathbf{I}\right)\mathbf{v}  = 0 \!\ \]</span></p>
+<p>对每一个特征方程，都会有 <span class="math inline">\(m_i ( 1 \le m_i \le n_i)\)</span> 个线性无关的解。这 <span class="math inline">\(m_i\)</span> 个向量与一个特征值 <span class="math inline">\(\lambda_i\)</span> 相对应。这里，整数 <span class="math inline">\(m_i\)</span> 称为特征值 <span class="math inline">\(\lambda_i\)</span> 的几何重数（geometric multiplicity），而 <span class="math inline">\(n_i\)</span> 称为代数重数（algebraic multiplicity）。这里需要注意的是几何重数与代数重数可以相等，但也可以不相等。一种最简单的情况是 <span class="math inline">\(m_i = n_i = 1\)</span>。<strong>特征向量的极大线性无关向量组中向量的个数可以由所有特征值的几何重数之和来确定。</strong></p>
+<p>这也是之前我们强调适用条件是 “具有线性独立特征向量（不一定是不同特征值）的方阵 A”，也就是看 n x n 的方阵 A 是否可以特征分解主要是看几何重数之和是否为 n 了。</p>
+</div>
+</div>
+<div id="计算-3" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> 计算</h2>
+<p>之前的文章中当然也写到过一些计算和它们的推导，比如：</p>
+<p><span class="math display">\[A^k\mathbf{x} = \lambda^k\mathbf{x}\]</span></p>
+<p>如果 A 可逆：</p>
+<p><span class="math display">\[A^{-1}\mathbf{x} =\frac{1}{\lambda} \mathbf{x}\]</span></p>
+<p>再来看一些别的，比如我们的 setup 是：</p>
+<p><span class="math display">\[ A \in \mathbb{R} ^{n \times n} \\
+\mathbf{x}_1, \cdots, \mathbf{x}_n \in \mathbb{R}^n  \text{ eigenvector}  \\
+|\lambda_1| \ge |\lambda_2| \ge \cdots \ge |\lambda_n| \text{ eigenvalues}
+\]</span></p>
+<p>根据谱定理，对于<span class="math inline">\(\mathbf{v} \in \mathbb{R}^n\)</span>， 我们有：</p>
+<p><span class="math display">\[\mathbf{v} = c_1 \mathbf{x}_1 + \cdots + c_n\mathbf{x}_n\]</span></p>
+<p>那么：</p>
+<p><span class="math display">\[A^k\mathbf{v} = \lambda_1^k \bigg( c_1 \mathbf{x}_1 +  (\frac{\lambda_2}{\lambda_1})^k c_2 \mathbf{x}_2 + \cdots + (\frac{\lambda_n}{\lambda_1})^k  c_n\mathbf{x}_n \bigg)\]</span></p>
+<div id="最大的-eigenvalue-及对应的-eigenvector" class="section level3" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> 最大的 eigenvalue 及对应的 eigenvector</h3>
+<p>如果 <span class="math inline">\(|\lambda_2| \le |\lambda_1|\)</span> 有：</p>
+<p><span class="math display">\[A^k \mathbf{v} = \lambda_1^k \mathbf{x}\]</span></p>
+<p>所以比如我们取</p>
+<p><span class="math display">\[\mathbf{v}_k = A \mathbf{v}_{k-1}\]</span></p>
+<p>这样我们就可以算出来<strong>最大的 eigenvalue 对应的 eigenvector</strong>，当然我们需要注意可能 <span class="math inline">\(|\lambda_1| \ge 1\)</span>，所以我们最好做一个 normalize 操作：</p>
+<p><span class="math display">\[\mathbf{w}_k = A \mathbf{v}_{k-1}\\
+\mathbf{v}_k = \frac{\mathbf{w}_k}{|\mathbf{w}_k|}
+\]</span></p>
+<p>这里的 norm 选哪个都所谓为，我们的重点只需要保证它不要无限制增长。</p>
+</div>
+<div id="最小的-eigenvalue-及对应的-eigenvector" class="section level3" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> 最小的 eigenvalue 及对应的 eigenvector</h3>
+<p>同样如果我们想要求出<strong>最小的 eigenvalue 对应的 eigenvector</strong> 我们可以这样操作：</p>
+<p><span class="math display">\[\mathbf{w}_k = A^{-1} \mathbf{v}_{k-1}\\
+\mathbf{v}_k = \frac{\mathbf{w}_k}{|\mathbf{w}_k|}
+\]</span></p>
+<p>因为 <span class="math inline">\(A^{-1}\)</span> 的特征值满足：</p>
+<p><span class="math display">\[|\frac{1}{\lambda_1}|  &lt; |\frac{1}{\lambda_2}| &lt; \cdots &lt;|\frac{1}{\lambda_n}| \]</span></p>
+</div>
+<div id="靠近-sigma的-eigenvalue-及对应的-eigenvector" class="section level3" number="4.3.3">
+<h3><span class="header-section-number">4.3.3</span> 靠近 <span class="math inline">\(\sigma\)</span>的 eigenvalue 及对应的 eigenvector</h3>
+<p>所以如果想要找到 <strong>靠近 <span class="math inline">\(\sigma\)</span>的 eigenvalue 的 eigenvector</strong> :</p>
+<p><span class="math display">\[\mathbf{v}_{k+1} = \frac{(A - \sigma I)^{-1} \mathbf{v}_k}{||(A - \sigma I)^{-1}\mathbf{v}_k||} \]</span></p>
+<p>这个式子本质上跟上面找最小是一样的，我们是在找 <span class="math inline">\((A - \sigma I)\)</span> 对应的最小的 eigenvector， 也就是这个 eigenvalue 需要靠近0， make sense.</p>
+</div>
+<div id="根据-eigenvector-猜-eigenvalue" class="section level3" number="4.3.4">
+<h3><span class="header-section-number">4.3.4</span> 根据 eigenvector 猜 eigenvalue</h3>
+<p>再来看一下问题的对立面，假设我们有一个 <span class="math inline">\(\mathbf{v}\)</span> 非常靠近某个 eigenvector， 那么我们怎么求它对应的 eigenvalue 呢？</p>
+<p><span class="math display">\[A\mathbf{v} \approx \lambda \mathbf{v}\]</span></p>
+<p>这里我们要求的就是 <span class="math inline">\(\lambda\)</span>， 我们想做的就是：</p>
+<p><span class="math display">\[
+\text{arg min}_{\lambda}||A\mathbf{v} - \lambda \mathbf{v}||^2
+\]</span></p>
+<p>上面这个式子这种类型我们应该很熟悉了，展开，记住我们相求的是 <span class="math inline">\(\lambda\)</span>, 求导，最终可以写成是：</p>
+<p><span class="math display">\[
+\lambda = \frac{\mathbf{v}^T A \mathbf{v}}{||\mathbf{v}||^2}
+\]</span></p>
+<p>上面这个式子叫做 瑞利熵（Rayleigh quotient)。</p>
+<p>它给了我们一种算法，叫做 瑞利商迭代（Rayleigh quotient iteration）。</p>
+<ol style="list-style-type: decimal">
+<li><p>选择 <span class="math inline">\(\mathbf{v} \in R^n\)</span> 为任意非零向量或者猜测一个特征向量。</p></li>
+<li><p>迭代直至收敛：</p>
+<ul>
+<li>计算对当前特征值的估计：<span class="math inline">\(\sigma_k = \frac{\mathbf{v}^T A \mathbf{v}}{||\mathbf{v}||^2}\)</span></li>
+<li>求解 <span class="math inline">\(\mathbf{w}_k = (A - \sigma I)^{-1} \mathbf{v}_{k-1}\)</span><br />
+</li>
+<li><span class="math inline">\(\mathbf{v}_k = \frac{\mathbf{w}_k}{|\mathbf{w}_k|}\)</span></li>
+</ul></li>
+</ol>
+<p>wikipedia 上有一个具体的例子： <a href="">Rayleigh quotient iteration</a></p>
+<p>上面我们写了如何计算最大的 eigenvalue， 最小的eigenvalue， 或者最靠近 <span class="math inline">\(\sigma\)</span> 的。</p>
+</div>
+<div id="all-eigenevalue" class="section level3" number="4.3.5">
+<h3><span class="header-section-number">4.3.5</span> All eigenevalue</h3>
+<p>那么如何算出所有的 eigenvalue 呢？先回到这个式子：</p>
+<p><span class="math display">\[\mathbf{v} = c_1 \mathbf{x}_1 + \cdots + c_n\mathbf{x}_n\]</span></p>
+<p>那么如果我们找到了一个和 <span class="math inline">\(\mathbf{x}\)</span> 垂直的向量 <span class="math inline">\(\mathbf{v}_0\)</span></p>
+<p><span class="math display">\[\mathbf{v}_0\cdot \mathbf{x}_1 = 0\]</span></p>
+<p>那么如果我们把 <span class="math inline">\(\mathbf{v}\)</span> 在 <span class="math inline">\(\mathbf{x}_1\)</span> 方向上的投影减去， 令之为 <span class="math inline">\(\mathbf{v}_1\)</span></p>
+<p><span class="math display">\[\mathbf{v}_1 = c_2 \mathbf{x}_2 + \cdots + c_n\mathbf{x}_n\]</span></p>
+<p><span class="math display">\[A\mathbf{v_1} = \lambda_2 \bigg( c_2 \mathbf{x}_2 + \cdots + (\frac{\lambda_n}{\lambda_2})  c_n\mathbf{x}_n \bigg)\\
+A^k\mathbf{v_1} = \lambda_2^k \bigg( c_2 \mathbf{x}_2 + \cdots + (\frac{\lambda_n}{\lambda_2})^k  c_n\mathbf{x}_n \bigg)\]</span></p>
+<p>这样不就可以继续算出 <span class="math inline">\(\mathbf{x}_2\)</span> 了么？</p>
+<p>这也提示了我们一种迭代法可以算出所有的 eigenvalue.</p>
+<p>但是注意如果A 非对称，那么其特征向量不正交。</p>
+<p><strong>但是这个算法的前提是 <span class="math inline">\(\mathbf{x}_1, \cdots, \mathbf{x}_n\)</span> 这些特征向量之间是正交的</strong>。</p>
+<p><strong>对于任意矩阵，其对应于不同特征值的特征向量线性无关，但不一定正交，而对于实对称矩阵，其对应于不同特征值的特征向量是相互正交的。</strong></p>
+</div>
+<div id="householder-变换" class="section level3" number="4.3.6">
+<h3><span class="header-section-number">4.3.6</span> Householder 变换</h3>
+<p>如果A的特征向量不正交话我们可以用 Householder 变换配合来计算，假设我们有H如下：</p>
+<p><span class="math display">\[H\mathbf{x}_1 = \mathbf{e}_1\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+HAH^T\mathbf{e}_1 {}
+&amp;= HAH\mathbf{e}_1 &amp;H = H^T\\
+&amp;= HAHH\mathbf{x}_1 &amp;H^2=I\\
+&amp;= HA\mathbf{x}_1 \\
+&amp;= \lambda_1H\mathbf{x}_1 \\
+&amp;= \lambda_1\mathbf{e}_1 \\
+\end{aligned}
+\]</span></p>
+<p>所以:</p>
+<p><span class="math display">\[
+HAH^T = \begin{bmatrix}
+\lambda_1 &amp; b \\
+0 &amp; B
+\end{bmatrix}
+\]</span></p>
+<p>所以利用 H 可以计算出 <span class="math inline">\(\lambda_1\)</span>, 不过后续的还要迭代继续。</p>
+</div>
+<div id="qr" class="section level3" number="4.3.7">
+<h3><span class="header-section-number">4.3.7</span> QR</h3>
+<p>如果：</p>
+<p><span class="math display">\[A = QR\\
+Q^{-1} = Q^{T} \\
+Q^{-1}AQ = Q^TAQ  = Q^T QR Q = RQ
+\]</span></p>
+<p>这也就给我们了一个迭代算法</p>
+<p><span class="math display">\[
+A_1 = A \\
+A_k = Q_kR_k\\
+A_{k+1} = R_kQ_k
+\]</span></p>
+<p>或者写成一句：</p>
+<p><span class="math display">\[{\displaystyle A_{k+1}=R_{k}Q_{k}=Q_{k}^{-1}Q_{k}R_{k}Q_{k}=Q_{k}^{-1}A_{k}Q_{k}=Q_{k}^{\mathsf {T}}A_{k}Q_{k}}\]</span></p>
+<p><span class="math inline">\(A_k\)</span> 系列总是相似的，有着相同的 eigenvalue， 而且这个方法具有数值稳定性。</p>
+<p>具体参见： <a href="https://en.wikipedia.org/wiki/QR_algorithm">QR algorithm</a></p>
+<p>具体计算我们依旧可以用 <code>scipy.linalg</code> 模块，有众多函数可选，比如：</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="-eigen-decomposition.html#cb5-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="-eigen-decomposition.html#cb5-2"></a><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> scipy <span class="im">import</span> linalg</span>
+<span id="cb5-3"><a href="-eigen-decomposition.html#cb5-3"></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">0</span>], [<span class="dv">1</span>, <span class="dv">3</span>]])</span>
+<span id="cb5-4"><a href="-eigen-decomposition.html#cb5-4"></a><span class="op">&gt;&gt;&gt;</span> linalg.eigvals(a)</span>
+<span id="cb5-5"><a href="-eigen-decomposition.html#cb5-5"></a>array([<span class="fl">3.</span><span class="op">+</span><span class="ot">0.j</span>, <span class="fl">1.</span><span class="op">+</span><span class="ot">0.j</span>])</span></code></pre></div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="qr-.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="-svd-decomposition.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["math_book.pdf", "math_book.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

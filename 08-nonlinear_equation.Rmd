@@ -1,0 +1,133 @@
+# 非线性方程求解 {nonlinear equation}
+
+我们从求根开始，对于非线性方程，可能 set up 是这样的：
+
+$$
+f: \mathbb{R}^n \to \mathbb{R}^m \\
+\vec{x}^* :  f(\vec{x}^* ) = \vec{0}
+$$
+
+我们先考虑最简单的情况： $f : \mathbb{R} \to \mathbb{R}$ 
+
+
+首先，我们可能会有很多奇奇怪怪的函数，首先，我们需要对函数做一些假设：
+
+- 连续： $x \to y, f(x) \to f(y)$
+- Lipschitz 连续： $| f(x) - f(y) | \le  C |x - y|$
+- 可微： $\forall x, \exists f'(x)$
+- $C^k$ : k阶可微，连续， 记得古典微分几何研究的大部分 $C^\infty$
+
+
+## 二分法 Bisection method
+
+
+中间值定理：
+
+> 假设有一连续函数 $f:[a,b]\mapsto \mathbb {R}$，且假设 f(a) < f(b)，若对任意数 u 满足 f(a) < u < f(b)，则存在一点 c, a < c < b，使得 f(c)=u，当 f(a) > f(b) 时也有类似叙述。
+
+直观地比喻，这代表在[a,b]区间上可以画出一个连续曲线，而不让笔离开纸面。
+
+
+若要求已知函数 f(x) = 0 的根 (x 的解)，则:
+
+1. 先找出一个区间 [a, b]，使得f(a)与f(b)异号。根据中间值定理，这个区间内一定包含着方程式的根。
+2. 求该区间的中点 $m={\frac  {a+b}{2}}$，并找出 f(m) 的值。
+3. f(m) = 0， 返回 m
+4. 若 f(m) 与 f(a) 正负号相同则取 [m, b] 为新的区间, 否则取 [a, m].
+5. 重复第2和第3步至理想精确度为止。
+
+这个算法还是很容易理解。并且它一定会 work， 它的收敛速度是线性的。
+
+## 不动点 fixed point
+
+fixed point 满足：
+
+$$
+g(x) = x
+$$
+
+
+如果我们想求不动点，令：
+
+$$
+x_0 \\
+x_{k+1} = g(x_k)
+$$
+
+这样迭代我们就可以求到不动点。
+
+
+如果我们令
+
+$$
+g(x) = f(x) + x 
+$$
+
+然后找到 g(x) 的不动点那么也就是找到了 f(x) 的根。  
+
+如果收敛的话，经常是二次收敛，所以速度优于二分法。
+
+## 牛顿法 Newton's method
+
+
+
+牛顿法很出名：
+
+$$
+x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}
+$$
+
+
+牛顿法的优点同样是二次收敛，缺点是 f'(x) 可能会难求，o(╯□╰)o
+
+
+
+
+
+
+## 割线法 Secant method
+
+f'(x) 难求所以有割线法：
+
+$$
+x_{k+1} = x_k - \frac{f(x_k)(x_k - x_{k-1})}{f(x_k) - f(x_{k-1})}
+$$
+
+感觉这个就是用 数值来代替 f'(x)， 不过割线需要两个初始值 $x_0, x_1$, 割线法的收敛速度率是 ${\displaystyle \alpha ={\frac {1+{\sqrt {5}}}{2}}\approx 1.618}$
+
+
+
+
+这些方法当然也可以混起来用。
+
+
+## 计算
+
+如果我想求解：
+
+$$
+\cos(x) - x^3 = 0
+$$
+
+
+使用 numpy ：
+
+
+```python
+import numpy as np
+from scipy.optimize import fsolve
+
+def func(x):
+    return np.cos(x) - x**3
+
+result = fsolve(func, 1)
+print(result)
+# 0.86547403
+print( func(result) )
+#2.22044605e-16
+```
+
+
+
+x = 0.86547 也算精度ok的解了。
+

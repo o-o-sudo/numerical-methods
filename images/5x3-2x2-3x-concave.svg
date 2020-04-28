@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Copyright 2017 mathsisfun.com -->
+<svg xmlns="http://www.w3.org/2000/svg" width="187.7" height="242.8" version="1.1" style="font-family:'Comic Sans MS'; font-size:13.3px; stroke-width:0.61px;">
+<defs>
+	<marker id="id1" style="overflow:visible;" orient="auto">
+		<path transform="matrix(0.4,0,0,0.4,4,0)" style="stroke:black; stroke-width:1pt;" d="M 0,0 5,-5 -12.5,0 5,5 Z"/>
+	</marker>
+	<marker id="id3" style="overflow:visible;" orient="auto">
+		<path transform="matrix(-0.4,0,0,-0.4,-4,0)" style="stroke:black; stroke-width:1pt;" d="M 0,0 5,-5 -12.5,0 5,5 Z"/>
+	</marker>
+	<marker id="id2" style="overflow:visible;" orient="auto">
+		<path transform="matrix(-0.4,0,0,-0.4,-4,0)" style="stroke:black; stroke-width:1pt;" d="M 0,0 5,-5 -12.5,0 5,5 Z"/>
+	</marker>
+</defs>
+<rect x="-0.5" y="-1.3" width="191.1" height="245.7" style="fill:white; stroke-width:1.69; stroke-linecap:round;"/>
+<text x="102.7" y="15.5" style="font-size:19.6px; font-style:italic; fill:black;">y</text>
+<text x="172.9" y="123.2" style="font-size:19.6px; font-style:italic; fill:black;">x</text>
+<path style="marker-start:url(#id1); marker-end:url(#id2); fill:none; stroke:black; stroke-width:1.16;" d="M 82.9,204.5 H 5.3"/>
+<text x="43.9" y="224" style="text-align:center; text-anchor:middle; fill:black;">Concave</text>
+<text x="135.8" y="224" style="text-align:center; text-anchor:middle; fill:black;">Concave</text>
+<path style="marker-start:url(#id1); marker-end:url(#id2); fill:none; stroke:black; stroke-width:1.16;" d="M 185.4,204.5 H 86.6"/>
+<path style="fill:none; stroke:black; stroke-width:1.59;" d="m 85,113.8 v 101.9"/>
+<path style="marker-end:url(#id3); fill:#2e3436; fill-opacity:0.75; stroke:#2e3436; stroke-width:1.39;" d="M 94.7,199.3 V 4.9"/>
+<path style="marker-end:url(#id3); fill:#2e3436; fill-opacity:0.75; stroke:#2e3436; stroke-width:1.39;" d="m -0,129.1 h 184.7"/>
+<path style="fill:none; stroke:#90b5c7; stroke-width:0.61;" d="m -0,91.8 h 183.7"/>
+<path style="fill:none; stroke:#90b5c7; stroke-width:0.61;" d="M 17.8,198.6 V -0"/>
+<path style="fill:none; stroke:#90b5c7; stroke-width:0.61;" d="M 169.8,198.3 V 1.7"/>
+<path style="fill:none; stroke:#90b5c7; stroke-width:0.61;" d="M 56.6,198.1 V -0"/>
+<path style="fill:none; stroke:#90b5c7; stroke-width:0.61;" d="M 131,198.1 V -0"/>
+<path style="fill:none; stroke:#90b5c7; stroke-width:0.61;" d="m -0,53.3 h 183.7"/>
+<path style="fill:none; stroke:#90b5c7; stroke-width:0.61;" d="m -0,15.4 h 183.7"/>
+<text x="10.7" y="145.8" style="font-family:Verdana; font-size:16.3px; fill:black;">-1</text>
+<text x="164.6" y="145.5" style="font-family:Verdana; font-size:16.3px; fill:black;">1</text>
+<path style="fill:none; stroke:#90b5c7; stroke-width:0.61;" d="m -0,168.3 h 183.7"/>
+<rect x="90.6" y="74.8" width="7.1" height="18.8" style="fill:white; fill-opacity:0.71; stroke-width:0.49;"/>
+<path style="fill:none; stroke:#0197fd; stroke-width:2.07; stroke-linecap:round;" d="m 9.9,194.1 c 0,0 14.9,-174.9 38.1,-174.2 23.2,0.7 47.1,154.5 70.3,154.8 23.2,0.3 36.7,-164.5 36.7,-164.5"/>
+<circle cx="84.9" cy="103.5" r="3.46459" style="fill:#ccff42; stroke:#dc0000; stroke-width:2.14;"/>
+<text x="113.9" y="88.6" style="text-align:center; text-anchor:middle; fill:#dc0000;">Inflection</text>
+<text x="113" y="104.2" style="text-align:center; text-anchor:middle; fill:#dc0000;">Point</text>
+<text x="43.8" y="236.8" style="text-align:center; text-anchor:middle; fill:black;">Downward</text>
+<text x="135.8" y="237.5" style="text-align:center; text-anchor:middle; fill:black;">Upward</text>
+</svg>
