@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 18 偏微分方程 {PDE} | 数值分析笔记</title>
+  <meta name="description" content="数值分析记得笔记" />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 18 偏微分方程 {PDE} | 数值分析笔记" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="数值分析记得笔记" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 18 偏微分方程 {PDE} | 数值分析笔记" />
+  
+  <meta name="twitter:description" content="数值分析记得笔记" />
+  
+
+<meta name="author" content="Xue Yu" />
+
+
+<meta name="date" content="2020-04-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="-ode.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>前言</a></li>
+<li class="chapter" data-level="1" data-path="-gaussian-elimination.html"><a href="-gaussian-elimination.html"><i class="fa fa-check"></i><b>1</b> 高斯消元法 {Gaussian elimination}</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="-gaussian-elimination.html"><a href="-gaussian-elimination.html#数学"><i class="fa fa-check"></i><b>1.1</b> 数学</a></li>
+<li class="chapter" data-level="1.2" data-path="-gaussian-elimination.html"><a href="-gaussian-elimination.html#计算"><i class="fa fa-check"></i><b>1.2</b> 计算</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="cholesky-cholesky-decomposition.html"><a href="cholesky-cholesky-decomposition.html"><i class="fa fa-check"></i><b>2</b> Cholesky分解 {Cholesky decomposition}</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="cholesky-cholesky-decomposition.html"><a href="cholesky-cholesky-decomposition.html#ata"><i class="fa fa-check"></i><b>2.1</b> <span class="math inline">\(A^{T}A\)</span></a></li>
+<li class="chapter" data-level="2.2" data-path="cholesky-cholesky-decomposition.html"><a href="cholesky-cholesky-decomposition.html#对称"><i class="fa fa-check"></i><b>2.2</b> 对称</a></li>
+<li class="chapter" data-level="2.3" data-path="cholesky-cholesky-decomposition.html"><a href="cholesky-cholesky-decomposition.html#正定矩阵"><i class="fa fa-check"></i><b>2.3</b> 正定矩阵</a></li>
+<li class="chapter" data-level="2.4" data-path="cholesky-cholesky-decomposition.html"><a href="cholesky-cholesky-decomposition.html#cholesky分解"><i class="fa fa-check"></i><b>2.4</b> Cholesky分解</a></li>
+<li class="chapter" data-level="2.5" data-path="cholesky-cholesky-decomposition.html"><a href="cholesky-cholesky-decomposition.html#计算-1"><i class="fa fa-check"></i><b>2.5</b> 计算</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="qr-.html"><a href="qr-.html"><i class="fa fa-check"></i><b>3</b> QR 分解</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="qr-.html"><a href="qr-.html#gram-schmidt"><i class="fa fa-check"></i><b>3.1</b> Gram-Schmidt</a></li>
+<li class="chapter" data-level="3.2" data-path="qr-.html"><a href="qr-.html#householder变换"><i class="fa fa-check"></i><b>3.2</b> Householder变换</a></li>
+<li class="chapter" data-level="3.3" data-path="qr-.html"><a href="qr-.html#计算-2"><i class="fa fa-check"></i><b>3.3</b> 计算</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html"><i class="fa fa-check"></i><b>4</b> 特征分解 {Eigen decomposition}</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#出现原因"><i class="fa fa-check"></i><b>4.1</b> 出现原因</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#主成分分析"><i class="fa fa-check"></i><b>4.1.1</b> 主成分分析</a></li>
+<li class="chapter" data-level="4.1.2" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#物理方程"><i class="fa fa-check"></i><b>4.1.2</b> 物理方程</a></li>
+<li class="chapter" data-level="4.1.3" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#quadratic-energy"><i class="fa fa-check"></i><b>4.1.3</b> Quadratic Energy</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#定义"><i class="fa fa-check"></i><b>4.2</b> 定义</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#特征值和特征向量"><i class="fa fa-check"></i><b>4.2.1</b> 特征值和特征向量</a></li>
+<li class="chapter" data-level="4.2.2" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#谱和谱半径"><i class="fa fa-check"></i><b>4.2.2</b> 谱和谱半径</a></li>
+<li class="chapter" data-level="4.2.3" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#有关特征值和特征向量的定理"><i class="fa fa-check"></i><b>4.2.3</b> 有关特征值和特征向量的定理</a></li>
+<li class="chapter" data-level="4.2.4" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#扩展到复域"><i class="fa fa-check"></i><b>4.2.4</b> 扩展到复域</a></li>
+<li class="chapter" data-level="4.2.5" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#谱定理"><i class="fa fa-check"></i><b>4.2.5</b> 谱定理</a></li>
+<li class="chapter" data-level="4.2.6" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#理论基础"><i class="fa fa-check"></i><b>4.2.6</b> 理论基础</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#计算-3"><i class="fa fa-check"></i><b>4.3</b> 计算</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#最大的-eigenvalue-及对应的-eigenvector"><i class="fa fa-check"></i><b>4.3.1</b> 最大的 eigenvalue 及对应的 eigenvector</a></li>
+<li class="chapter" data-level="4.3.2" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#最小的-eigenvalue-及对应的-eigenvector"><i class="fa fa-check"></i><b>4.3.2</b> 最小的 eigenvalue 及对应的 eigenvector</a></li>
+<li class="chapter" data-level="4.3.3" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#靠近-sigma的-eigenvalue-及对应的-eigenvector"><i class="fa fa-check"></i><b>4.3.3</b> 靠近 <span class="math inline">\(\sigma\)</span>的 eigenvalue 及对应的 eigenvector</a></li>
+<li class="chapter" data-level="4.3.4" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#根据-eigenvector-猜-eigenvalue"><i class="fa fa-check"></i><b>4.3.4</b> 根据 eigenvector 猜 eigenvalue</a></li>
+<li class="chapter" data-level="4.3.5" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#all-eigenevalue"><i class="fa fa-check"></i><b>4.3.5</b> All eigenevalue</a></li>
+<li class="chapter" data-level="4.3.6" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#householder-变换"><i class="fa fa-check"></i><b>4.3.6</b> Householder 变换</a></li>
+<li class="chapter" data-level="4.3.7" data-path="-eigen-decomposition.html"><a href="-eigen-decomposition.html#qr"><i class="fa fa-check"></i><b>4.3.7</b> QR</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html"><i class="fa fa-check"></i><b>5</b> 奇异值分解 {SVD decomposition}</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#引入"><i class="fa fa-check"></i><b>5.1</b> 引入</a></li>
+<li class="chapter" data-level="5.2" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#理解"><i class="fa fa-check"></i><b>5.2</b> 理解</a></li>
+<li class="chapter" data-level="5.3" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#计算-4"><i class="fa fa-check"></i><b>5.3</b> 计算</a></li>
+<li class="chapter" data-level="5.4" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#应用"><i class="fa fa-check"></i><b>5.4</b> 应用</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#例子一"><i class="fa fa-check"></i><b>5.4.1</b> 例子一</a></li>
+<li class="chapter" data-level="5.4.2" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#例子二"><i class="fa fa-check"></i><b>5.4.2</b> 例子二</a></li>
+<li class="chapter" data-level="5.4.3" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#例子三"><i class="fa fa-check"></i><b>5.4.3</b> 例子三</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="-svd-decomposition.html"><a href="-svd-decomposition.html#例子"><i class="fa fa-check"></i><b>5.5</b> 例子</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="-svd-application.html"><a href="-svd-application.html"><i class="fa fa-check"></i><b>6</b> 奇异值分解的应用 {SVD application}</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="-svd-application.html"><a href="-svd-application.html#rigid-alignment-procrustes-problem"><i class="fa fa-check"></i><b>6.1</b> Rigid Alignment / Procrustes Problem</a></li>
+<li class="chapter" data-level="6.2" data-path="-svd-application.html"><a href="-svd-application.html#apar"><i class="fa fa-check"></i><b>6.2</b> APAR</a></li>
+<li class="chapter" data-level="6.3" data-path="-svd-application.html"><a href="-svd-application.html#pca"><i class="fa fa-check"></i><b>6.3</b> PCA</a></li>
+<li class="chapter" data-level="6.4" data-path="-svd-application.html"><a href="-svd-application.html#图像压缩"><i class="fa fa-check"></i><b>6.4</b> 图像压缩</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="-matirx-application.html"><a href="-matirx-application.html"><i class="fa fa-check"></i><b>7</b> 矩阵分解 {matirx application}</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="-matirx-application.html"><a href="-matirx-application.html#定义-1"><i class="fa fa-check"></i><b>7.1</b> 定义</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="-matirx-application.html"><a href="-matirx-application.html#共轭转置-conjugate-transpose"><i class="fa fa-check"></i><b>7.1.1</b> 共轭转置 Conjugate transpose</a></li>
+<li class="chapter" data-level="7.1.2" data-path="-matirx-application.html"><a href="-matirx-application.html#hermitian"><i class="fa fa-check"></i><b>7.1.2</b> Hermitian</a></li>
+<li class="chapter" data-level="7.1.3" data-path="-matirx-application.html"><a href="-matirx-application.html#正定-positive-definite"><i class="fa fa-check"></i><b>7.1.3</b> 正定 positive definite</a></li>
+<li class="chapter" data-level="7.1.4" data-path="-matirx-application.html"><a href="-matirx-application.html#正交矩阵-orthogonal-matrix"><i class="fa fa-check"></i><b>7.1.4</b> 正交矩阵 orthogonal matrix</a></li>
+<li class="chapter" data-level="7.1.5" data-path="-matirx-application.html"><a href="-matirx-application.html#酉矩阵-unitary-matrix"><i class="fa fa-check"></i><b>7.1.5</b> 酉矩阵 unitary matrix</a></li>
+<li class="chapter" data-level="7.1.6" data-path="-matirx-application.html"><a href="-matirx-application.html#正规矩阵-normal-matrix"><i class="fa fa-check"></i><b>7.1.6</b> 正规矩阵 normal matrix</a></li>
+<li class="chapter" data-level="7.1.7" data-path="-matirx-application.html"><a href="-matirx-application.html#类比"><i class="fa fa-check"></i><b>7.1.7</b> 类比</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="-matirx-application.html"><a href="-matirx-application.html#分解"><i class="fa fa-check"></i><b>7.2</b> 分解</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="-matirx-application.html"><a href="-matirx-application.html#a-plu"><i class="fa fa-check"></i><b>7.2.1</b> A = PLU</a></li>
+<li class="chapter" data-level="7.2.2" data-path="-matirx-application.html"><a href="-matirx-application.html#cholesky-分解"><i class="fa fa-check"></i><b>7.2.2</b> Cholesky 分解</a></li>
+<li class="chapter" data-level="7.2.3" data-path="-matirx-application.html"><a href="-matirx-application.html#qr分解"><i class="fa fa-check"></i><b>7.2.3</b> QR分解</a></li>
+<li class="chapter" data-level="7.2.4" data-path="-matirx-application.html"><a href="-matirx-application.html#特征分解频谱分解-eigendecomposition-spectral-decomposition"><i class="fa fa-check"></i><b>7.2.4</b> 特征分解/频谱分解 Eigendecomposition / spectral decomposition</a></li>
+<li class="chapter" data-level="7.2.5" data-path="-matirx-application.html"><a href="-matirx-application.html#奇异值分解"><i class="fa fa-check"></i><b>7.2.5</b> 奇异值分解</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="-nonlinear-equation.html"><a href="-nonlinear-equation.html"><i class="fa fa-check"></i><b>8</b> 非线性方程求解 {nonlinear equation}</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="-nonlinear-equation.html"><a href="-nonlinear-equation.html#二分法-bisection-method"><i class="fa fa-check"></i><b>8.1</b> 二分法 Bisection method</a></li>
+<li class="chapter" data-level="8.2" data-path="-nonlinear-equation.html"><a href="-nonlinear-equation.html#不动点-fixed-point"><i class="fa fa-check"></i><b>8.2</b> 不动点 fixed point</a></li>
+<li class="chapter" data-level="8.3" data-path="-nonlinear-equation.html"><a href="-nonlinear-equation.html#牛顿法-newtons-method"><i class="fa fa-check"></i><b>8.3</b> 牛顿法 Newton’s method</a></li>
+<li class="chapter" data-level="8.4" data-path="-nonlinear-equation.html"><a href="-nonlinear-equation.html#割线法-secant-method"><i class="fa fa-check"></i><b>8.4</b> 割线法 Secant method</a></li>
+<li class="chapter" data-level="8.5" data-path="-nonlinear-equation.html"><a href="-nonlinear-equation.html#计算-5"><i class="fa fa-check"></i><b>8.5</b> 计算</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="-nonlinear-equations.html"><a href="-nonlinear-equations.html"><i class="fa fa-check"></i><b>9</b> 非线性方程组求解 {nonlinear equations}</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="-nonlinear-equations.html"><a href="-nonlinear-equations.html#牛顿法"><i class="fa fa-check"></i><b>9.1</b> 牛顿法</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="-nonlinear-equations.html"><a href="-nonlinear-equations.html#雅可比矩阵-jacobian-matrix"><i class="fa fa-check"></i><b>9.1.1</b> 雅可比矩阵 Jacobian matrix</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="-nonlinear-equations.html"><a href="-nonlinear-equations.html#broydens-method"><i class="fa fa-check"></i><b>9.2</b> Broyden’s method</a></li>
+<li class="chapter" data-level="9.3" data-path="-nonlinear-equations.html"><a href="-nonlinear-equations.html#计算-6"><i class="fa fa-check"></i><b>9.3</b> 计算</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="-points-concepts.html"><a href="-points-concepts.html"><i class="fa fa-check"></i><b>10</b> 临界点、驻点、拐点、鞍点、顶点（曲线） {Points Concepts}</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="-points-concepts.html"><a href="-points-concepts.html#临界点-critial-point"><i class="fa fa-check"></i><b>10.1</b> 临界点 critial point</a></li>
+<li class="chapter" data-level="10.2" data-path="-points-concepts.html"><a href="-points-concepts.html#驻点-stationary-point"><i class="fa fa-check"></i><b>10.2</b> 驻点 stationary point</a></li>
+<li class="chapter" data-level="10.3" data-path="-points-concepts.html"><a href="-points-concepts.html#拐点-inflection-point"><i class="fa fa-check"></i><b>10.3</b> 拐点 inflection point</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="-points-concepts.html"><a href="-points-concepts.html#convex-凸函数"><i class="fa fa-check"></i><b>10.3.1</b> convex 凸函数</a></li>
+<li class="chapter" data-level="10.3.2" data-path="-points-concepts.html"><a href="-points-concepts.html#concave-凹函数"><i class="fa fa-check"></i><b>10.3.2</b> concave 凹函数：</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="-points-concepts.html"><a href="-points-concepts.html#鞍点-saddle-point"><i class="fa fa-check"></i><b>10.4</b> 鞍点 saddle point</a></li>
+<li class="chapter" data-level="10.5" data-path="-points-concepts.html"><a href="-points-concepts.html#顶点曲线vertex-curve"><i class="fa fa-check"></i><b>10.5</b> 顶点（曲线）vertex (curve)</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="-jacobianhessian-gradient-related-concepts.html"><a href="-jacobianhessian-gradient-related-concepts.html"><i class="fa fa-check"></i><b>11</b> 导数、梯度、 Jacobian、Hessian {Gradient Related Concepts}</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="-jacobianhessian-gradient-related-concepts.html"><a href="-jacobianhessian-gradient-related-concepts.html#导数"><i class="fa fa-check"></i><b>11.1</b> 导数</a></li>
+<li class="chapter" data-level="11.2" data-path="-jacobianhessian-gradient-related-concepts.html"><a href="-jacobianhessian-gradient-related-concepts.html#梯度"><i class="fa fa-check"></i><b>11.2</b> 梯度</a></li>
+<li class="chapter" data-level="11.3" data-path="-jacobianhessian-gradient-related-concepts.html"><a href="-jacobianhessian-gradient-related-concepts.html#jacobian-雅可比矩阵"><i class="fa fa-check"></i><b>11.3</b> Jacobian 雅可比矩阵</a></li>
+<li class="chapter" data-level="11.4" data-path="-jacobianhessian-gradient-related-concepts.html"><a href="-jacobianhessian-gradient-related-concepts.html#hessian-黑塞矩阵"><i class="fa fa-check"></i><b>11.4</b> Hessian 黑塞矩阵</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html"><i class="fa fa-check"></i><b>12</b> 无约束优化 {Optimization without constraintss}</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#例子-1"><i class="fa fa-check"></i><b>12.1</b> 例子</a></li>
+<li class="chapter" data-level="12.2" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#极值"><i class="fa fa-check"></i><b>12.2</b> 极值</a></li>
+<li class="chapter" data-level="12.3" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#一元函数"><i class="fa fa-check"></i><b>12.3</b> 一元函数</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#牛顿法-1"><i class="fa fa-check"></i><b>12.3.1</b> 牛顿法</a></li>
+<li class="chapter" data-level="12.3.2" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#黄金分割搜索-golden-section-search"><i class="fa fa-check"></i><b>12.3.2</b> 黄金分割搜索 Golden-section search</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#多元函数"><i class="fa fa-check"></i><b>12.4</b> 多元函数</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#梯度下降法"><i class="fa fa-check"></i><b>12.4.1</b> 梯度下降法</a></li>
+<li class="chapter" data-level="12.4.2" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#牛顿法-2"><i class="fa fa-check"></i><b>12.4.2</b> 牛顿法</a></li>
+<li class="chapter" data-level="12.4.3" data-path="-optimization-without-constraintss.html"><a href="-optimization-without-constraintss.html#bfgs"><i class="fa fa-check"></i><b>12.4.3</b> BFGS</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html"><i class="fa fa-check"></i><b>13</b> 从拉格朗日乘子法到KKT条件 {Lagrange multiplier to KKT condition}</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#介绍"><i class="fa fa-check"></i><b>13.1</b> 介绍</a></li>
+<li class="chapter" data-level="13.2" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#多个约束"><i class="fa fa-check"></i><b>13.2</b> 多个约束</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#例子-2"><i class="fa fa-check"></i><b>13.2.1</b> 例子</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#kkt-条件"><i class="fa fa-check"></i><b>13.3</b> KKT 条件</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#介绍-1"><i class="fa fa-check"></i><b>13.3.1</b> 介绍</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#kkt-条件-1"><i class="fa fa-check"></i><b>13.4</b> KKT 条件</a></li>
+<li class="chapter" data-level="13.5" data-path="-kkt-lagrange-multiplier-to-kkt-condition.html"><a href="-kkt-lagrange-multiplier-to-kkt-condition.html#例子-3"><i class="fa fa-check"></i><b>13.5</b> 例子</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="-conjugate-gradient.html"><a href="-conjugate-gradient.html"><i class="fa fa-check"></i><b>14</b> 从梯度下降到共轭梯度 {Conjugate gradient}</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="-conjugate-gradient.html"><a href="-conjugate-gradient.html#梯度下降-gradient-descent"><i class="fa fa-check"></i><b>14.1</b> 梯度下降 Gradient descent</a></li>
+<li class="chapter" data-level="14.2" data-path="-conjugate-gradient.html"><a href="-conjugate-gradient.html#共轭梯度-conjugate-gradient"><i class="fa fa-check"></i><b>14.2</b> 共轭梯度 Conjugate gradient</a></li>
+<li class="chapter" data-level="14.3" data-path="-conjugate-gradient.html"><a href="-conjugate-gradient.html#总结"><i class="fa fa-check"></i><b>14.3</b> 总结</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="-interpolate.html"><a href="-interpolate.html"><i class="fa fa-check"></i><b>15</b> 插值 {Interpolate}</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="-interpolate.html"><a href="-interpolate.html#多项式插值"><i class="fa fa-check"></i><b>15.1</b> 多项式插值</a></li>
+<li class="chapter" data-level="15.2" data-path="-interpolate.html"><a href="-interpolate.html#拉格朗日插值法"><i class="fa fa-check"></i><b>15.2</b> 拉格朗日插值法</a></li>
+<li class="chapter" data-level="15.3" data-path="-interpolate.html"><a href="-interpolate.html#牛顿插值法"><i class="fa fa-check"></i><b>15.3</b> 牛顿插值法</a></li>
+<li class="chapter" data-level="15.4" data-path="-interpolate.html"><a href="-interpolate.html#分段插值"><i class="fa fa-check"></i><b>15.4</b> 分段插值</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html"><i class="fa fa-check"></i><b>16</b> 数值积分和微分{Numerial Intergration}</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#积分"><i class="fa fa-check"></i><b>16.1</b> 积分</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#黎曼和"><i class="fa fa-check"></i><b>16.1.1</b> 黎曼和</a></li>
+<li class="chapter" data-level="16.1.2" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#梯形法则"><i class="fa fa-check"></i><b>16.1.2</b> 梯形法则</a></li>
+<li class="chapter" data-level="16.1.3" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#辛普森法则"><i class="fa fa-check"></i><b>16.1.3</b> 辛普森法则</a></li>
+<li class="chapter" data-level="16.1.4" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#牛顿-柯特斯公式"><i class="fa fa-check"></i><b>16.1.4</b> 牛顿-柯特斯公式</a></li>
+<li class="chapter" data-level="16.1.5" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#精确度"><i class="fa fa-check"></i><b>16.1.5</b> 精确度</a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="-numerial-intergration.html"><a href="-numerial-intergration.html#微分"><i class="fa fa-check"></i><b>16.2</b> 微分</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="-ode.html"><a href="-ode.html"><i class="fa fa-check"></i><b>17</b> 常微分方程 {ODE}</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="-ode.html"><a href="-ode.html#基本形式"><i class="fa fa-check"></i><b>17.1</b> 基本形式</a></li>
+<li class="chapter" data-level="17.2" data-path="-ode.html"><a href="-ode.html#显式-ode"><i class="fa fa-check"></i><b>17.2</b> 显式 ODE</a></li>
+<li class="chapter" data-level="17.3" data-path="-ode.html"><a href="-ode.html#可视化"><i class="fa fa-check"></i><b>17.3</b> 可视化</a></li>
+<li class="chapter" data-level="17.4" data-path="-ode.html"><a href="-ode.html#解的状况"><i class="fa fa-check"></i><b>17.4</b> 解的状况</a></li>
+<li class="chapter" data-level="17.5" data-path="-ode.html"><a href="-ode.html#线性ode"><i class="fa fa-check"></i><b>17.5</b> 线性ODE</a></li>
+<li class="chapter" data-level="17.6" data-path="-ode.html"><a href="-ode.html#求解"><i class="fa fa-check"></i><b>17.6</b> 求解</a>
+<ul>
+<li class="chapter" data-level="17.6.1" data-path="-ode.html"><a href="-ode.html#前向欧拉法"><i class="fa fa-check"></i><b>17.6.1</b> 前向欧拉法</a></li>
+<li class="chapter" data-level="17.6.2" data-path="-ode.html"><a href="-ode.html#后向欧拉"><i class="fa fa-check"></i><b>17.6.2</b> 后向欧拉</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="-pde.html"><a href="-pde.html"><i class="fa fa-check"></i><b>18</b> 偏微分方程 {PDE}</a>
+<ul>
+<li class="chapter" data-level="18.1" data-path="-pde.html"><a href="-pde.html#解"><i class="fa fa-check"></i><b>18.1</b> 解</a></li>
+<li class="chapter" data-level="18.2" data-path="-pde.html"><a href="-pde.html#运算符"><i class="fa fa-check"></i><b>18.2</b> 运算符</a></li>
+<li class="chapter" data-level="18.3" data-path="-pde.html"><a href="-pde.html#纳维-斯托克斯方程-navier-stokes-equations"><i class="fa fa-check"></i><b>18.3</b> 纳维-斯托克斯方程 Navier-Stokes equations</a></li>
+<li class="chapter" data-level="18.4" data-path="-pde.html"><a href="-pde.html#麦克斯韦方程组-maxwells-equations"><i class="fa fa-check"></i><b>18.4</b> 麦克斯韦方程组 Maxwell’s equations</a></li>
+<li class="chapter" data-level="18.5" data-path="-pde.html"><a href="-pde.html#拉普拉斯方程-laplaces-equation"><i class="fa fa-check"></i><b>18.5</b> 拉普拉斯方程 Laplace’s equation</a></li>
+<li class="chapter" data-level="18.6" data-path="-pde.html"><a href="-pde.html#调和分析-harmonic-analysis"><i class="fa fa-check"></i><b>18.6</b> 调和分析 Harmonic analysis</a></li>
+<li class="chapter" data-level="18.7" data-path="-pde.html"><a href="-pde.html#边界条件-boundary-value-problems"><i class="fa fa-check"></i><b>18.7</b> 边界条件 Boundary Value Problems</a></li>
+<li class="chapter" data-level="18.8" data-path="-pde.html"><a href="-pde.html#二阶pde"><i class="fa fa-check"></i><b>18.8</b> 二阶PDE</a></li>
+<li class="chapter" data-level="18.9" data-path="-pde.html"><a href="-pde.html#椭圆型-pde"><i class="fa fa-check"></i><b>18.9</b> 椭圆型 PDE</a></li>
+<li class="chapter" data-level="18.10" data-path="-pde.html"><a href="-pde.html#抛物型-pde"><i class="fa fa-check"></i><b>18.10</b> 抛物型 PDE</a></li>
+<li class="chapter" data-level="18.11" data-path="-pde.html"><a href="-pde.html#双曲型-pde"><i class="fa fa-check"></i><b>18.11</b> 双曲型 PDE</a></li>
+<li class="chapter" data-level="18.12" data-path="-pde.html"><a href="-pde.html#微分看成算子"><i class="fa fa-check"></i><b>18.12</b> 微分看成算子</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">数值分析笔记</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="偏微分方程-pde" class="section level1" number="18">
+<h1><span class="header-section-number">Chapter 18</span> 偏微分方程 {PDE}</h1>
+<p>常微分方程（ODE） 的时候我们更多是关于时间的导数。偏微分方程（partial differential equation) 则不仅仅是与时间相关，加上了与空间位置相关的一些信息。</p>
+<div id="解" class="section level2" number="18.1">
+<h2><span class="header-section-number">18.1</span> 解</h2>
+<p>当 ODE 满足 利普希茨连续（Lipschitz continuity），我们就可以有唯一解。但是 PDE 我们可能并没有这样好的性质，我们不知道它是否应该有解，很多时候也许我们就是用有限元方法（finite element method）来模拟，如果看到的结果还不错的话，我们就当这个就是它的解，o(╯□╰)o</p>
+</div>
+<div id="运算符" class="section level2" number="18.2">
+<h2><span class="header-section-number">18.2</span> 运算符</h2>
+<p>首先需要搞清楚： 梯度、散度、旋度、拉普拉斯 运算符:</p>
+<p><span class="math display">\[ f: \mathbb{R}^3 \to \mathbb{R}, \vec{v}: \mathbb{R}^3 \to \mathbb{R}^3  \\
+\text{Gradient: } \nabla f = \big( \frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2},\frac{\partial f}{\partial x_3}\big) \\
+\text{Divergence: } \nabla \cdot \vec{v} = \frac{\partial v_1}{\partial x_1} + \frac{\partial v_2}{\partial x_2} + \frac{\partial v_3}{\partial x_3} \\
+\text{Curl: } \nabla \times \vec{v} = \big( \frac{\partial v_3}{\partial x_2} - \frac{\partial v_2}{\partial x_3} ,  \frac{\partial v_1}{\partial x_3} - \frac{\partial v_3}{\partial x_1}, \frac{\partial v_2}{\partial x_1} - \frac{\partial v_1}{\partial x_2} \big) \\
+\text{Laplacian: } \nabla^2 f = \frac{\partial^2 f}{\partial x_1} + \frac{\partial^2 f}{\partial x_2} + \frac{\partial^2 f}{\partial x_3}
+\]</span></p>
+<table>
+<colgroup>
+<col width="31%" />
+<col width="37%" />
+<col width="31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">运算符 operator</th>
+<th align="center">运算量 operand</th>
+<th align="right">结果 result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">梯度 Gradient</td>
+<td align="center">多元函数 Multivariate function <span class="math inline">\(f:\mathbb{R}^3 \to \mathbb{R}\)</span></td>
+<td align="right">矢量 Vector <span class="math inline">\(\mathbb{R} \to \mathbb{R}^3\)</span></td>
+</tr>
+<tr class="even">
+<td align="left">散度 Divergence</td>
+<td align="center">矢量场 Vector Field <span class="math inline">\(\vec{v}: \mathbb{R}^3 \to \mathbb{R}^3\)</span></td>
+<td align="right">纯量 scalar <span class="math inline">\(\mathbb{R}^3 \to \mathbb{R}\)</span></td>
+</tr>
+<tr class="odd">
+<td align="left">旋度 Curl</td>
+<td align="center">矢量场 Vector Field <span class="math inline">\(\vec{v}: \mathbb{R}^3 \to \mathbb{R}^3\)</span></td>
+<td align="right">矢量场 Vector Field <span class="math inline">\(\mathbb{R}^3 \to \mathbb{R}^3\)</span></td>
+</tr>
+<tr class="even">
+<td align="left">拉普拉斯 Laplacian</td>
+<td align="center">多元函数 Multivariate function <span class="math inline">\(f:\mathbb{R}^3 \to \mathbb{R}\)</span></td>
+<td align="right">纯量 scalar <span class="math inline">\(\mathbb{R}^3 \to \mathbb{R}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>关于 梯度、散度、旋度 以及 拉普拉斯可以理很久，如果需要复习，可以参见之前我写过的两篇：</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/71504738">梯度旋度散度</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/97545154">梯度、散度、旋度</a></li>
+</ul>
+<p>在 物理 有关的偏微分方程中，如果函数是 <span class="math inline">\(f(t; x, y, z)\)</span>， 当我们写到 nabla 运算符是 <span class="math inline">\(\nabla = \big( \frac{\partial }{\partial x}, \frac{\partial }{\partial y},\frac{\partial }{\partial z}\big)\)</span> ,是与 t 无关的。</p>
+</div>
+<div id="纳维-斯托克斯方程-navier-stokes-equations" class="section level2" number="18.3">
+<h2><span class="header-section-number">18.3</span> 纳维-斯托克斯方程 Navier-Stokes equations</h2>
+<p>Navier-Stokes equations 是大概做流体模拟的一个基础方程，是一个典型的 PDE 方程：
+<span class="math display">\[
+\rho\bigg( \frac{\partial \vec{v}}{\partial t} + \vec{v} \cdot \nabla \vec{v} \bigg) = -\nabla p + \mu \nabla^2 \vec{v} + \vec{f} \\
+t \in [0, \infty): \text{time  时间}  \\
+\vec{v}(t): \Omega \to \mathbb{R}^3 : \text{velocity 速度} \\
+\rho(t): \Omega \to \mathbb{R}: \text{density 密度} \\
+p(t): \Omega \to \mathbb{R}: \text{pressure 压力} \\
+\vec{f}(t): \Omega \to \mathbb{R}^3: \text{external force 外力，比如重力等} \\
+\]</span></p>
+<p>或者我们用 wikipedia 中的写法：
+<span class="math display">\[
+{\displaystyle \overbrace {\rho {\Big (}\underbrace {\frac {\partial \mathbf {v} }{\partial t}} _{\begin{smallmatrix}{\text{Unsteady}}\\{\text{acceleration}}\end{smallmatrix}}+\underbrace {(\mathbf {v} \cdot \nabla )\mathbf {v} } _{\begin{smallmatrix}{\text{Convective}}\\{\text{acceleration}}\end{smallmatrix}}{\Big )}} ^{\text{Inertia}}=\underbrace {-\nabla p} _{\begin{smallmatrix}{\text{Pressure}}\\{\text{gradient}}\end{smallmatrix}}+\underbrace {\mu \nabla ^{2}\mathbf {v} } _{\text{Viscosity}}+\underbrace {\mathbf {f} } _{\begin{smallmatrix}{\text{Other}}\\{\text{forces}}\end{smallmatrix}}}
+\]</span>
+光看这个形式就很复杂了，是否可解这里光看式子就会想打上很多问号？？？所以克雷数学研究所的千禧年七大问题之一就是有关于 Navier-Stokes equations，</p>
+<blockquote>
+<p>Prove or give a counter-example of the following statement:</p>
+</blockquote>
+<blockquote>
+<p>In three space dimensions and time, given an initial velocity field, there exists a vector velocity and a scalar pressure field, which are both smooth and globally defined, that solve the Navier–Stokes equations.</p>
+</blockquote>
+<p>价值 $1,000,000</p>
+<p>其它的百万问题还包括：</p>
+<ul>
+<li>P vs NP</li>
+<li>霍奇猜想</li>
+<li>庞加莱猜想</li>
+<li>黎曼猜想</li>
+<li>…</li>
+</ul>
+</div>
+<div id="麦克斯韦方程组-maxwells-equations" class="section level2" number="18.4">
+<h2><span class="header-section-number">18.4</span> 麦克斯韦方程组 Maxwell’s equations</h2>
+<p>最最出名的 PDE 应该是 - 麦克斯韦方程组：
+<span class="math display">\[
+\text{Gauss&#39;s law: } \nabla \cdot \mathbf {E} ={\frac {\rho }{\varepsilon _{0}}}\\
+\text{Gauss&#39;s law for magnetism: }\nabla \cdot \mathbf {B} =0\\
+\text{Maxwell–Faraday equation: }\nabla \times \mathbf {E} =-{\frac {\partial \mathbf {B} }{\partial t}}\\
+\text{Ampère&#39;s circuital law: }\nabla \times \mathbf {B} =\mu _{0}\left(\mathbf {J} +\varepsilon _{0}{\frac {\partial \mathbf {E} }{\partial t}}\right)
+\]</span></p>
+</div>
+<div id="拉普拉斯方程-laplaces-equation" class="section level2" number="18.5">
+<h2><span class="header-section-number">18.5</span> 拉普拉斯方程 Laplace’s equation</h2>
+<p>拉普拉斯方程非常出名， 形式简单：</p>
+<p><span class="math display">\[
+\nabla^2 f(\vec{x}) = 0
+\]</span>
+它是泊松方程的特殊形式。</p>
+<p>拉普拉斯方程又被称为调和方程。因为调和函数（harmonic function）的定义也就是函数满足拉普拉斯方程。</p>
+<p>之所以被定义为调和（harmonic）大概起因和 泛音(overtone)相关。</p>
+<p>关于 调和函数 的另一种感性的理解就是如果我们把 拉普拉斯运算符 看成 类似二阶导一样的东西。</p>
+<ul>
+<li>对于 <span class="math inline">\(f: \mathbb{R} \to \mathbb{R}\)</span> : 二阶导 决定了这个函数的 凹凸性, 或者说 二阶导 决定了这个点周围的函数值是比它大还还是比它小。二阶导 在这里变成了我们比较函数的与它邻居的大小。</li>
+</ul>
+<div class="figure">
+<img src="images/2nd_derivative.png" alt="" />
+<p class="caption">2nd_derivative.png</p>
+</div>
+<ul>
+<li>对于 <span class="math inline">\(f: \mathbb{R}^n \to \mathbb{R}\)</span> : 如果把它看成类似二阶导，那么我们假设取一个点，然后看它周围的圆（球，反正是与这个点距离相等的函数上的点），它们的平均值是跟这个点是一样的。</li>
+</ul>
+<div class="figure">
+<img src="images/harmonic_f2.png" alt="" />
+<p class="caption">harmonic_f2.png</p>
+</div>
+<p>比如上面的 harmonic function: <span class="math inline">\(f(x,y) = e^x siny\)</span>， 虽然难以想象，但是比如我们在之上任意取一个点，这个点周围的圆上面的函数值的平均是一样的，在平坦的部分还容易想到这个结论，在有起伏的地方比较难想象到。</p>
+<p>平均值一样,某种意义上就代表稳定。</p>
+<p>以下的两个说法来自知乎问题： <a href="https://www.zhihu.com/question/25083195">调和函数到底有什么意义？</a></p>
+<blockquote>
+<p>物理上可以用来描述一个稳定的状态，比如定常的温度场，自由电场电势，引力势能等等。数学上，比如说调和函数直接对应到复变里面的全纯函数，微分几何里面调和函数对应的是极小曲面，黎曼几何里调和函数可以推广到调和形式，然后就可以有Hodge 分解……上面每一个都可以展开，而且我强烈感觉我没想全……简直太有意义了</p>
+</blockquote>
+<blockquote>
+<p>调和函数的线性组合仍为调和函数，所以是一个函数空间。调和函数无限次可导。调和函数在定义域的紧子集的边界上达到最大最小值，这是一种类似单调的性质。加上其他的一些性质，导致调和函数容易处理也更可能满足某些规律。以上是数学工作者看重的某些意义，你或许会觉得这不叫意义，那么可以考虑在物理学上的意义：二阶偏导的和等于零，对应于加速度的和为零，即可以描述系统不受力的状态，即稳态。当不能刻画系统在每一时刻的状态，却能用调和函数描述系统稳态下的状态，调和函数就显得非常有意义了。</p>
+</blockquote>
+<p>回头继续, 先扔一个问题的 setup：
+<span class="math display">\[
+\text{minimize}_f \int_\Omega \parallel \nabla f(\vec{x}) \parallel_2^2 d\vec{x} \\
+\text{such that } f(\vec{x}) = g(\vec{x}) , \forall \vec{x} \in \partial \Omega
+\]</span>
+也就是我们给定区域 <span class="math inline">\(\Omega\)</span>， 它有边界 <span class="math inline">\(\partial \Omega\)</span>，边界上 <span class="math inline">\(\partial \Omega\)</span> 有函数 <span class="math inline">\(g(\vec{x})\)</span> ，我们想要找到一个函数满足 <span class="math inline">\(f(\vec{x}) = g(\vec{x})\)</span>，也就是在这个边界上相等。</p>
+<p>那么 <span class="math inline">\(\text{minimize}_f \int_\Omega \parallel \nabla f(\vec{x}) \parallel_2^2 d\vec{x}\)</span> 是在干什么呢？实际上这个函数有自己的名字 - 狄利克雷能量(Dirichlet’s energy)：
+<span class="math display">\[
+E[f] = \int_\Omega \parallel \nabla f(\vec{x}) \parallel_2^2 d\vec{x}
+\]</span>
+这个 energy function 代表的是什么？</p>
+<p>梯度代表的是 函数 的变化，类似于导数，这个一整个 梯度的 l2 norm的平方积分 - 导数变化求和，最小化 它 也就是最小化函数的变化。所以上面这个问题也就是在尝试：</p>
+<ul>
+<li>在边界满足 f = g</li>
+<li>最小化函数 f 在区域内的变化</li>
+</ul>
+<p>也就是让函数尽量光滑，所以也就是 f ‘as smooth as possible’.（ 记得之前还有过 ‘as rigid as possible’)</p>
+<p>可用变分解出，f 需要满足 拉普拉斯方程。</p>
+<p>考虑任意h，需要有：
+<span class="math display">\[
+E[f + h] \ge E[f]
+\]</span>
+考虑 <span class="math inline">\(E[f + \epsilon h]\)</span> :
+<span class="math display">\[
+\begin{aligned}
+E[f +  \epsilon h] &amp;= \int_\Omega \parallel \nabla f(\vec{x}) + \epsilon \nabla h(\vec{x}) \parallel_2^2 d \vec{x} \\
+&amp;= \int_\Omega \big( \parallel \nabla f(\vec{x}) \parallel_2^2 + 2 \epsilon f(\vec{x}) \cdot \nabla h(\vec{x}) + \epsilon^2 \parallel \nabla h(\vec{x})\parallel_2^2 \big)  d \vec{x}
+\end{aligned}
+\]</span>
+关于 <span class="math inline">\(\epsilon\)</span> 求导：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{ d }{d \epsilon}E[f +  \epsilon h] &amp;= \int_\Omega \big( 2  f(\vec{x}) \cdot \nabla h(\vec{x}) +2 \epsilon \parallel \nabla h(\vec{x})\parallel_2^2 \big)  d \vec{x} \\
+\frac{ d }{d \epsilon}E[f +  \epsilon h] |_{\epsilon = 0} &amp;= 2 \int_\Omega \big(   f(\vec{x}) \cdot \nabla h(\vec{x})  \big)  d \vec{x} 
+\end{aligned}
+\]</span>
+上述推导对于任何 h 都成立，特殊的，我们取 <span class="math inline">\(h(\vec{x}) = 0, \vec{x} \in \partial \Omega\)</span>， 然后利用分布积分，其实也就是 格林恒等式：</p>
+<p><span class="math display">\[{\displaystyle \int _{\Omega }\nabla u\cdot \nabla v\,d\Omega \ =\ \int _{\Gamma }v\,\nabla u\cdot {\hat {\mathbf {n} }}\,d\Gamma -\int _{\Omega }v\,\nabla ^{2}\!u\,d\Omega }\]</span></p>
+<p>上面式子可以转化为：</p>
+<p><span class="math display">\[
+\frac{ d }{d \epsilon}E[f +  \epsilon h] |_{\epsilon = 0} = -2 \int_\Omega \big(   h(\vec{x}) \nabla^2 f(\vec{x})  \big)  d \vec{x} 
+\]</span>
+这个式子恒等于0，所以也就是：
+<span class="math display">\[
+\nabla^2 f(\vec{x}) = 0, x \in \Omega \setminus  \partial \Omega
+\]</span>
+也就是我们需要求解的 PDE 为：
+<span class="math display">\[
+\begin{aligned}
+\nabla^2 f(\vec{x}) &amp;= 0 \\
+f(\vec{x}) &amp;= g(\vec{x}), \forall \vec{x} \in \partial \Omega
+\end{aligned}
+\]</span>
+其实也就是 狄利克雷问题（Dirichlet problem）：</p>
+<blockquote>
+<p>给定定义在 <span class="math inline">\(\mathbb{R}^n\)</span> 中一个区域的边界上一个函数 g，是否存在惟一连续函数 f 在内部两次连续可微，在边界上连续，使得 f 在内部调和并在边界上 f = g ？</p>
+</blockquote>
+<p>其实这个也蛮像插值问题的，比如之前的插值， 给一些点，推断出函数的模样。这也是给一个边界，想要知道函数在区域内的全貌。</p>
+</div>
+<div id="调和分析-harmonic-analysis" class="section level2" number="18.6">
+<h2><span class="header-section-number">18.6</span> 调和分析 Harmonic analysis</h2>
+<p><span class="math display">\[\nabla^2f = \lambda f\]</span></p>
+<p>这也是一类PDE问题，解特征方程。</p>
+</div>
+<div id="边界条件-boundary-value-problems" class="section level2" number="18.7">
+<h2><span class="header-section-number">18.7</span> 边界条件 Boundary Value Problems</h2>
+<p>狄利克雷问题（Dirichlet problem）是给定边界，推断函数。类似的还包括：</p>
+<ul>
+<li>狄利克雷边界条件 Dirichlet conditions: <span class="math inline">\(f(\vec{x}) = g(\vec{x}) \text{on } \partial \Omega\)</span></li>
+<li>诺伊曼边界条件 Neumann conditions: <span class="math inline">\(\nabla f(\vec{x}) = g(\vec{x}) \text{on} \partial \Omega\)</span></li>
+<li>混合 Robin boundary condition: 类似 <span class="math inline">\(af(\vec{x}) + b\nabla f(\vec{x})=g(\vec{x}) {\text{on }}\partial \Omega\)</span></li>
+</ul>
+</div>
+<div id="二阶pde" class="section level2" number="18.8">
+<h2><span class="header-section-number">18.8</span> 二阶PDE</h2>
+<p>二阶PDE 的一般形式是：
+<span class="math display">\[
+\sum_{ij} a_{ij} \frac{\partial f} {\partial x_i \partial x_j} + \sum_i b_i \frac{\partial f}{\partial x_i} + cf = 0
+\]</span>
+我们也可以把上述方程写成：
+<span class="math display">\[
+(\nabla^T A \nabla + \nabla \cdot \vec{b} + c) f = 0
+\]</span>
+我们可以根据上面的式子来分类：</p>
+<ul>
+<li>A 是 正定矩阵 或者 负定矩阵 （特征值全为正或者全为负） ： 椭圆型 elliptic</li>
+<li>A 是 半正定矩阵 或者 半负定矩阵 （特征值除了全正或者全负，可以加上0）： 抛物型 parabolic</li>
+<li>A只存在一个特征值和其他特征值符号不同 ： 双曲型 hyperbolic</li>
+<li>不满足上述条件 ： 超双曲型 ultrahyperbolic</li>
+</ul>
+</div>
+<div id="椭圆型-pde" class="section level2" number="18.9">
+<h2><span class="header-section-number">18.9</span> 椭圆型 PDE</h2>
+<ul>
+<li>有解 &amp; 唯一解</li>
+<li><span class="math inline">\(C^{\infty}\)</span></li>
+<li>拉普拉斯/泊松方程 <span class="math inline">\(\nabla^2 f = g\)</span></li>
+</ul>
+</div>
+<div id="抛物型-pde" class="section level2" number="18.10">
+<h2><span class="header-section-number">18.10</span> 抛物型 PDE</h2>
+<ul>
+<li>短时间内的解是存在/唯一的</li>
+<li>热方程： <span class="math inline">\(\frac{\partial f}{\partial t} = \alpha \nabla^2 f\)</span></li>
+<li>边界条件 需要跟时间、空间相关</li>
+</ul>
+</div>
+<div id="双曲型-pde" class="section level2" number="18.11">
+<h2><span class="header-section-number">18.11</span> 双曲型 PDE</h2>
+<ul>
+<li>波动方程: <span class="math inline">\(\frac{\partial^2 f}{\partial t^2} = c^2 \nabla^2 f\)</span></li>
+<li>边界条件: 一阶导</li>
+</ul>
+</div>
+<div id="微分看成算子" class="section level2" number="18.12">
+<h2><span class="header-section-number">18.12</span> 微分看成算子</h2>
+<p>微分很容易验证其为成线性算子。</p>
+<p>先看一维简单的例子，之前在数值积分和微分中已经讨论过，比如我们可以用离散、差分等方式把 <span class="math inline">\(y_k&#39;&#39;\)</span> 看成:
+<span class="math display">\[
+y_k&#39;&#39; = \frac{y_{k+1} - 2 y_k + y_{k-1}}{h^2}
+\]</span>
+所以如果假设 f(x) 在 [0,1] 上有：
+<span class="math display">\[
+y_0 = f(0), y_0 = f(h), y_2 = f(2h), \cdots ,y_n = f(nh) 
+\]</span>
+那么，这里就从微分到了差分，其实应该也 ‘≈’ :
+<span class="math display">\[
+y_k&#39;&#39; = \frac{y_{k+1} - 2 y_k + y_{k-1}}{h^2}
+\]</span></p>
+<p>或者写成：</p>
+<p><span class="math display">\[
+y_k&#39;&#39; h^2 =  y_{k+1} - 2 y_k + y_{k-1}
+\]</span></p>
+<p>如果我们把 <span class="math inline">\(y_k\)</span> 写成向量 <span class="math inline">\(\vec{y} \in \mathbb{R}^{n+1}\)</span>， 把 <span class="math inline">\(y_k&#39;&#39;\)</span> 写成向量 <span class="math inline">\(\vec{w} \in \mathbb{R}^{n+1}\)</span>，上面的式子可以写成:
+<span class="math display">\[
+h^2 \vec{w} = L_1\vec{y}
+\]</span></p>
+<p>那么根据边界条件的不同，<span class="math inline">\(L_1\)</span> 可以为：</p>
+<ul>
+<li><p>Dirichlet
+<span class="math display">\[
+{\begin{pmatrix}-2 &amp; 1 &amp; &amp; &amp; &amp;  \\1 &amp; -2 &amp; 1 &amp; &amp; &amp; \\ &amp; 1 &amp;-2&amp;1&amp; \\&amp; &amp;\ddots&amp;\ddots&amp;\ddots&amp; \\ &amp;  &amp; &amp; 1&amp; -2&amp; 1  \\ &amp;  &amp; &amp; &amp;1&amp;-2 \end{pmatrix}}
+\]</span></p></li>
+<li><p>Neumann
+<span class="math display">\[
+{\begin{pmatrix}-1 &amp; 1 &amp; &amp; &amp; &amp;  \\1 &amp; -2 &amp; 1 &amp; &amp; &amp; \\ &amp; 1 &amp;-2&amp;1&amp; \\&amp; &amp;\ddots&amp;\ddots&amp;\ddots&amp; \\ &amp;  &amp; &amp; 1&amp; -2&amp; 1  \\ &amp;  &amp; &amp; &amp;1&amp;-1 \end{pmatrix}}
+\]</span></p></li>
+<li><p>周期性 f(0) = f (1)
+<span class="math display">\[
+{\begin{pmatrix}-2 &amp; 1 &amp; &amp; &amp; &amp;1  \\1 &amp; -2 &amp; 1 &amp; &amp; &amp; \\ &amp; 1 &amp;-2&amp;1&amp; \\&amp; &amp;\ddots&amp;\ddots&amp;\ddots&amp; \\ &amp;  &amp; &amp; 1&amp; -2&amp; 1  \\1 &amp;  &amp; &amp; &amp;1&amp;-2 \end{pmatrix}}
+\]</span>
+然后我们就像解线性系统一样来解这个系统了。</p></li>
+</ul>
+<p>即使是 2D 的网格，我们也可以用类似的方法来离散：
+<span class="math display">\[
+(\nabla^2 y)_{k,l} = \frac{1}{h^2} \big( y_{(k-1),l} + y_{k, (l-1)} + y_{(k+1), l} + y_{k,(l+1)} - 4 y_{k,l} \big)
+\]</span></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="-ode.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["math_book.pdf", "math_book.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
