@@ -1,1 +1,6 @@
-This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). Please see the page "Get Started" at https://bookdown.org/home/about/ for how to compile this example.
+
+# 数值分析
+
+<https://o-o-sudo.github.io/numerical-methods/>
+
+数值分析笔记📒， 用 R bookdown 书写。✍️

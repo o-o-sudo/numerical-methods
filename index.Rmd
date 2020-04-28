@@ -1,6 +1,6 @@
 --- 
 title: 数值分析笔记
-author: "Xue Yu"
+author: "o-o"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
